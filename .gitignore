@@ -1,0 +1,12 @@
+.idea
+target
+dependency-reduced-pom.xml
+*.iml
+*.class
+.mvn/wrapper/maven-wrapper.jar
+pom.xml.versionsBackup
+
+# Files which will always get generated in the build process
+executor.jar
+embedded.jar
+dependencies.txt
