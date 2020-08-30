@@ -6,6 +6,7 @@
   "STATUS": {
   },
   "PLAY": {
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutPlayerPosition": 52,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityDestroy": 54,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutRemoveEntityEffect": 55,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateHealth": 73,
