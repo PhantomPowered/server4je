@@ -1,6 +1,5 @@
 {
   "HANDSHAKING": {
-    "com.github.phantompowered.server4je.protocol.handshake.PacketInSetProtocol": 0
   },
   "LOGIN": {
   },
