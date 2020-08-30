@@ -7,5 +7,6 @@
   "STATUS": {
   },
   "PLAY": {
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityTeleport": 86
   }
 }
