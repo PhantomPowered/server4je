@@ -45,6 +45,19 @@ public class PacketOutCustomSoundEffect implements Packet {
     private float volume;
     private float pitch;
 
+    public PacketOutCustomSoundEffect() {
+    }
+
+    public PacketOutCustomSoundEffect(Namespaced key, SoundCategory soundCategory, int x, int y, int z, float volume, float pitch) {
+        this.key = key;
+        this.soundCategory = soundCategory;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.volume = volume;
+        this.pitch = pitch;
+    }
+
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
         PacketOnlyToClientException.throwNow();
