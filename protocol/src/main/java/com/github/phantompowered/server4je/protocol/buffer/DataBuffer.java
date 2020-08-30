@@ -24,6 +24,7 @@
  */
 package com.github.phantompowered.server4je.protocol.buffer;
 
+import com.destroystokyo.paper.Namespaced;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.util.ByteProcessor;
@@ -60,6 +61,11 @@ public abstract class DataBuffer extends ByteBuf {
 
     @NotNull
     public abstract String readString(@Range(from = 0, to = Short.MAX_VALUE) int maxLength);
+
+    public abstract void writeNamespaced(@NotNull Namespaced namespaced);
+
+    @NotNull
+    public abstract Namespaced readNamespaced();
 
     public abstract void writeByteArray(@NotNull byte[] bytes);
 
