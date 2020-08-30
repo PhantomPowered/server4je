@@ -10,6 +10,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityDestroy": 54,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutRemoveEntityEffect": 55,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateHealth": 73,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutTimeUpdate": 78,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityTeleport": 86,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityEffect": 89
   }
