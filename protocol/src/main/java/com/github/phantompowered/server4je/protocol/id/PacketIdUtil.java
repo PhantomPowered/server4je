@@ -47,15 +47,16 @@ public final class PacketIdUtil {
         throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
     }
 
-    private static final Map<ProtocolState, Map<String, Short>> IDS = new ConcurrentHashMap<>();
+    private static final Map<ProtocolState, Map<String, Short>> SERVER_IDS = new ConcurrentHashMap<>();
+    private static final Map<ProtocolState, Map<String, Short>> CLIENT_IDS = new ConcurrentHashMap<>();
     private static final Type TYPE = TypeToken.getParameterized(Map.class, String.class, Short.class).getType();
 
-    public static short getPacketId(@NotNull ProtocolState state, @NotNull Class<?> clazz) {
-        if (IDS.isEmpty()) {
-            loadIds();
+    public static short getServerPacketId(@NotNull ProtocolState state, @NotNull Class<?> clazz) {
+        if (SERVER_IDS.isEmpty()) {
+            loadIds("server");
         }
 
-        var ids = IDS.get(state);
+        var ids = SERVER_IDS.get(state);
         if (ids == null) {
             ReportedException.throwWrapped("No protocol ids loaded for state " + state);
         }
@@ -68,23 +69,41 @@ public final class PacketIdUtil {
         return id;
     }
 
-    private static void loadIds() {
-        var stream = PacketIdUtil.class.getClassLoader().getResourceAsStream("packet-ids.json");
+    public static short getClientPacketId(@NotNull ProtocolState state, @NotNull Class<?> clazz) {
+        if (SERVER_IDS.isEmpty()) {
+            loadIds("client");
+        }
+
+        var ids = CLIENT_IDS.get(state);
+        if (ids == null) {
+            ReportedException.throwWrapped("No protocol ids loaded for state " + state);
+        }
+
+        Short id = ids.get(clazz.getName());
+        if (id == null) {
+            ReportedException.throwWrapped("Missing protocol id for packet " + clazz.getName());
+        }
+
+        return id;
+    }
+
+    private static void loadIds(@NotNull String type) {
+        var stream = PacketIdUtil.class.getClassLoader().getResourceAsStream("packet-ids-" + type + ".json");
         if (stream == null) {
-            ReportedException.throwWrapped("Unable to find packet-ids.json file");
+            ReportedException.throwWrapped("Unable to find packet-ids-" + type + ".json file");
         }
 
         try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
             var element = JsonParser.parseReader(reader).getAsJsonObject();
             for (var state : ProtocolState.values()) {
-                loadIds(element, state);
+                loadIds(element, state, type);
             }
         } catch (IOException exception) {
-            ReportedException.throwWrapped(exception, "Exception loading packet ids");
+            ReportedException.throwWrapped(exception, "Exception loading packet " + type + " ids");
         }
     }
 
-    private static void loadIds(@NotNull JsonObject dataHolder, @NotNull ProtocolState state) {
+    private static void loadIds(@NotNull JsonObject dataHolder, @NotNull ProtocolState state, @NotNull String type) {
         var ids = dataHolder.get(state.name());
         if (ids == null || ids instanceof JsonNull) {
             ReportedException.throwWrapped("No packet ids found for " + state);
@@ -95,6 +114,15 @@ public final class PacketIdUtil {
             ReportedException.throwWrapped("Packet ids not formatted correctly " + state);
         }
 
-        IDS.put(state, idsMapped);
+        switch (type.toLowerCase()) {
+            case "server":
+                SERVER_IDS.put(state, idsMapped);
+                break;
+            case "client":
+                CLIENT_IDS.put(state, idsMapped);
+                break;
+            default:
+                ReportedException.throwWrapped("No default id state for " + type);
+        }
     }
 }

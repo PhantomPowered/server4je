@@ -71,7 +71,7 @@ public class PacketInSetProtocol implements Packet {
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getPacketId(ProtocolState.HANDSHAKING, PacketInSetProtocol.class);
+        return PacketIdUtil.getClientPacketId(ProtocolState.HANDSHAKING, PacketInSetProtocol.class);
     }
 
     public int getProtocolVersion() {

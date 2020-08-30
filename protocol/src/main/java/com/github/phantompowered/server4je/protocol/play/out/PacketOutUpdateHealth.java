@@ -64,7 +64,7 @@ public class PacketOutUpdateHealth extends PrimitivePacket {
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getPacketId(ProtocolState.PLAY, PacketOutUpdateHealth.class);
+        return PacketIdUtil.getServerPacketId(ProtocolState.PLAY, PacketOutUpdateHealth.class);
     }
 
     public float getHealth() {

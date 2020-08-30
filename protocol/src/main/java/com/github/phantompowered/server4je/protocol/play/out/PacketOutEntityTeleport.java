@@ -86,7 +86,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getPacketId(ProtocolState.PLAY, PacketOutEntityTeleport.class);
+        return PacketIdUtil.getServerPacketId(ProtocolState.PLAY, PacketOutEntityTeleport.class);
     }
 
     public int getEntityId() {
