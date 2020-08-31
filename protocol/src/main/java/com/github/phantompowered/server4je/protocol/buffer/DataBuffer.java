@@ -54,7 +54,7 @@ public abstract class DataBuffer extends ByteBuf {
 
     public abstract void writeString(@NotNull String string);
 
-    public abstract void writeString(@NotNull String string, @Range(from = 0, to = Short.MAX_VALUE) short maxLength);
+    public abstract void writeString(@NotNull String string, @Range(from = 0, to = Short.MAX_VALUE) int maxLength);
 
     @NotNull
     public abstract String readString();

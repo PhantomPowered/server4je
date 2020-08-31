@@ -2,6 +2,7 @@
   "HANDSHAKING": {
   },
   "LOGIN": {
+    "com.github.phantompowered.server4je.protocol.login.out.PacketOutSuccess": 2
   },
   "STATUS": {
     "com.github.phantompowered.server4je.protocol.status.out.PacketOutResponse": 0,
