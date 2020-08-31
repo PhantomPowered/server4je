@@ -4,6 +4,7 @@
   "LOGIN": {
   },
   "STATUS": {
+    "com.github.phantompowered.server4je.protocol.status.out.PacketOutPong": 1
   },
   "PLAY": {
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCustomSoundEffect": 24,
