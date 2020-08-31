@@ -60,6 +60,9 @@ public abstract class DataBuffer extends ByteBuf {
     public abstract String readString();
 
     @NotNull
+    public abstract String readStringSilently(@Range(from = 0, to = Short.MAX_VALUE) int maxLength);
+
+    @NotNull
     public abstract String readString(@Range(from = 0, to = Short.MAX_VALUE) int maxLength);
 
     public abstract void writeNamespaced(@NotNull Namespaced namespaced);

@@ -30,6 +30,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAbilities": 26,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerDigging": 27,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInEntityAction": 28,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInNameItem": 32,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAdvancements": 34,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSetBeaconEffect": 36,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInHeldItemChange": 37,
