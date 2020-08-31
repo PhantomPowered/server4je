@@ -24,7 +24,8 @@
  */
 package com.github.phantompowered.server4je.protocol.play.in;
 
-import com.github.phantompowered.server4je.common.exception.ReportedException;
+import com.github.phantompowered.server4je.api.position.MovingPosition;
+import com.github.phantompowered.server4je.api.position.MovingPositionBlock;
 import com.github.phantompowered.server4je.protocol.Packet;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
@@ -34,20 +35,33 @@ import com.github.phantompowered.server4je.protocol.state.ProtocolState;
 import com.github.phantompowered.server4je.protocol.utils.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-public class PacketInPlayerDigging implements Packet {
+public class PacketInPlayerBlockPlacement implements Packet {
 
-    private Type type;
-    private Location blockLocation;
-    private BlockFace facing;
+    private PacketInArmAnimation.Hand hand;
+    private MovingPositionBlock positionBlock;
 
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
-        this.type = Type.values()[dataBuffer.readVarInt()];
-        this.blockLocation = LocationUtil.locationFromLong(dataBuffer.readLong());
-        this.facing = PacketInPlayerDigging.readDirection(dataBuffer.readUnsignedByte());
+        this.hand = PacketInArmAnimation.Hand.values()[dataBuffer.readVarInt()];
+
+        Location location = LocationUtil.locationFromLong(dataBuffer.readLong());
+        BlockFace direction = PacketInPlayerDigging.readDirection(dataBuffer.readVarInt());
+        float x = dataBuffer.readFloat();
+        float y = dataBuffer.readFloat();
+        float z = dataBuffer.readFloat();
+        boolean inBlock = dataBuffer.readBoolean();
+
+        this.positionBlock = new MovingPositionBlock(
+            new Vector(location.getX() + x, location.getY() + y, location.getZ() + z),
+            direction,
+            location,
+            inBlock,
+            MovingPosition.MovingType.BLOCK
+        );
     }
 
     @Override
@@ -57,69 +71,28 @@ public class PacketInPlayerDigging implements Packet {
 
     @Override
     public void releaseData() {
-        this.facing = null;
-        this.blockLocation = null;
-        this.type = null;
+        this.hand = null;
+        this.positionBlock = null;
     }
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInPlayerDigging.class);
+        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInPlayerBlockPlacement.class);
     }
 
-    public Type getType() {
-        return type;
+    public PacketInArmAnimation.Hand getHand() {
+        return hand;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setHand(PacketInArmAnimation.Hand hand) {
+        this.hand = hand;
     }
 
-    public Location getBlockLocation() {
-        return blockLocation;
+    public MovingPositionBlock getPositionBlock() {
+        return positionBlock;
     }
 
-    public void setBlockLocation(Location blockLocation) {
-        this.blockLocation = blockLocation;
-    }
-
-    public BlockFace getFacing() {
-        return facing;
-    }
-
-    public void setFacing(BlockFace facing) {
-        this.facing = facing;
-    }
-
-    public enum Type {
-
-        START_DESTROY_BLOCK,
-        ABORT_DESTROY_BLOCK,
-        STOP_DESTROY_BLOCK,
-        DROP_ALL_ITEMS,
-        DROP_ITEM,
-        RELEASE_USE_ITEM,
-        SWAP_ITEM_WITH_OFFHAND
-    }
-
-    @NotNull
-    public static BlockFace readDirection(int direction) {
-        switch (direction) {
-            case 0:
-                return BlockFace.DOWN;
-            case 1:
-                return BlockFace.UP;
-            case 2:
-                return BlockFace.NORTH;
-            case 3:
-                return BlockFace.SOUTH;
-            case 4:
-                return BlockFace.WEST;
-            case 5:
-                return BlockFace.EAST;
-            default:
-                ReportedException.throwWrapped("Illegal byte enum block face received: " + direction);
-                return null; // Unreachable
-        }
+    public void setPositionBlock(MovingPositionBlock positionBlock) {
+        this.positionBlock = positionBlock;
     }
 }
