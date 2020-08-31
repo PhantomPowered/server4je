@@ -12,6 +12,7 @@
     "com.github.phantompowered.server4je.protocol.status.in.PacketInPing": 1
   },
   "PLAY": {
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInCraftRecipeRequest": 25,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAbilities": 26,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAdvancements": 34,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInArmAnimation": 44
