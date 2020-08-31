@@ -21,6 +21,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInTabComplete": 6,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInWindowConfirmation": 7,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInClickWindowButton": 8,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInClickWindow": 9,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCloseWindow": 10,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCustomPayload": 11,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInBookEdit": 12,
