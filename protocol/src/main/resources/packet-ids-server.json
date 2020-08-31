@@ -3,7 +3,8 @@
   },
   "LOGIN": {
     "com.github.phantompowered.server4je.protocol.login.out.PacketOutEncryptionRequest": 1,
-    "com.github.phantompowered.server4je.protocol.login.out.PacketOutSuccess": 2
+    "com.github.phantompowered.server4je.protocol.login.out.PacketOutSuccess": 2,
+    "com.github.phantompowered.server4je.protocol.login.out.PacketOutEnableCompression": 3
   },
   "STATUS": {
     "com.github.phantompowered.server4je.protocol.status.out.PacketOutResponse": 0,
