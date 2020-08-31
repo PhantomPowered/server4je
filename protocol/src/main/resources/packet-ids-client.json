@@ -13,6 +13,7 @@
   },
   "PLAY": {
     "com.github.phantompowered.server4je.protocol.play.in.PacketInBookEdit": 12,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInSteerBoat": 23,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCraftRecipeRequest": 25,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAbilities": 26,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerDigging": 27,
