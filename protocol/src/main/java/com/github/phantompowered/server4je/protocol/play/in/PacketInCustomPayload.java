@@ -68,7 +68,7 @@ public class PacketInCustomPayload implements Packet {
     }
 
     public Namespaced getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public void setIdentifier(Namespaced identifier) {
@@ -76,7 +76,7 @@ public class PacketInCustomPayload implements Packet {
     }
 
     public byte[] getData() {
-        return data;
+        return this.data;
     }
 
     public void setData(byte[] data) {

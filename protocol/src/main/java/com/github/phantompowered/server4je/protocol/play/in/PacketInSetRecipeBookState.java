@@ -62,7 +62,7 @@ public class PacketInSetRecipeBookState implements Packet {
     }
 
     public RecipeBookType getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(RecipeBookType type) {
@@ -70,7 +70,7 @@ public class PacketInSetRecipeBookState implements Packet {
     }
 
     public boolean isBookOpen() {
-        return bookOpen;
+        return this.bookOpen;
     }
 
     public void setBookOpen(boolean bookOpen) {
@@ -78,7 +78,7 @@ public class PacketInSetRecipeBookState implements Packet {
     }
 
     public boolean isFilterActive() {
-        return filterActive;
+        return this.filterActive;
     }
 
     public void setFilterActive(boolean filterActive) {

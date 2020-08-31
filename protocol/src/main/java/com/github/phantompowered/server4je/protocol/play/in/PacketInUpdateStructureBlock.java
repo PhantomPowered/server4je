@@ -103,7 +103,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public Location getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(Location position) {
@@ -111,7 +111,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public Action getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(Action action) {
@@ -119,7 +119,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public StructureBlock.Mode getMode() {
-        return mode;
+        return this.mode;
     }
 
     public void setMode(StructureBlock.Mode mode) {
@@ -127,7 +127,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -135,7 +135,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public Vector getOffset() {
-        return offset;
+        return this.offset;
     }
 
     public void setOffset(Vector offset) {
@@ -143,7 +143,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public Vector getSize() {
-        return size;
+        return this.size;
     }
 
     public void setSize(Vector size) {
@@ -151,7 +151,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public Mirror getMirror() {
-        return mirror;
+        return this.mirror;
     }
 
     public void setMirror(Mirror mirror) {
@@ -159,7 +159,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public StructureRotation getRotation() {
-        return rotation;
+        return this.rotation;
     }
 
     public void setRotation(StructureRotation rotation) {
@@ -167,7 +167,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public String getMetadata() {
-        return metadata;
+        return this.metadata;
     }
 
     public void setMetadata(String metadata) {
@@ -175,7 +175,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public float getIntegrity() {
-        return integrity;
+        return this.integrity;
     }
 
     public void setIntegrity(float integrity) {
@@ -183,7 +183,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public long getSeed() {
-        return seed;
+        return this.seed;
     }
 
     public void setSeed(long seed) {
@@ -191,7 +191,7 @@ public class PacketInUpdateStructureBlock implements Packet {
     }
 
     public byte getFlags() {
-        return flags;
+        return this.flags;
     }
 
     public void setFlags(byte flags) {

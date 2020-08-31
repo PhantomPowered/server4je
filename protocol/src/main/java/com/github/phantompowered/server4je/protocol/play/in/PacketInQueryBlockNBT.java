@@ -62,7 +62,7 @@ public class PacketInQueryBlockNBT implements Packet {
     }
 
     public int getTransactionId() {
-        return transactionId;
+        return this.transactionId;
     }
 
     public void setTransactionId(int transactionId) {
@@ -70,7 +70,7 @@ public class PacketInQueryBlockNBT implements Packet {
     }
 
     public Location getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(Location position) {

@@ -60,6 +60,6 @@ public class PacketOutEnableCompression extends PrimitivePacket {
     }
 
     public int getThreshold() {
-        return threshold;
+        return this.threshold;
     }
 }

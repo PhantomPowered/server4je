@@ -56,6 +56,6 @@ public class PacketInPing extends PrimitivePacket {
     }
 
     public long getPayload() {
-        return payload;
+        return this.payload;
     }
 }

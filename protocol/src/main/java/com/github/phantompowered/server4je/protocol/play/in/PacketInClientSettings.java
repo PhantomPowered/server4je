@@ -72,7 +72,7 @@ public class PacketInClientSettings implements Packet {
     }
 
     public String getLocale() {
-        return locale;
+        return this.locale;
     }
 
     public void setLocale(String locale) {
@@ -80,7 +80,7 @@ public class PacketInClientSettings implements Packet {
     }
 
     public int getViewDistance() {
-        return viewDistance;
+        return this.viewDistance;
     }
 
     public void setViewDistance(int viewDistance) {
@@ -88,7 +88,7 @@ public class PacketInClientSettings implements Packet {
     }
 
     public ClientOption.ChatVisibility getChatVisibility() {
-        return chatVisibility;
+        return this.chatVisibility;
     }
 
     public void setChatVisibility(ClientOption.ChatVisibility chatVisibility) {
@@ -96,7 +96,7 @@ public class PacketInClientSettings implements Packet {
     }
 
     public boolean isChatColors() {
-        return chatColors;
+        return this.chatColors;
     }
 
     public void setChatColors(boolean chatColors) {
@@ -104,7 +104,7 @@ public class PacketInClientSettings implements Packet {
     }
 
     public int getSkinParts() {
-        return skinParts;
+        return this.skinParts;
     }
 
     public void setSkinParts(int skinParts) {
@@ -112,7 +112,7 @@ public class PacketInClientSettings implements Packet {
     }
 
     public MainHand getMainHand() {
-        return mainHand;
+        return this.mainHand;
     }
 
     public void setMainHand(MainHand mainHand) {

@@ -58,7 +58,7 @@ public class PacketInUseItem implements Packet {
     }
 
     public PacketInArmAnimation.Hand getHand() {
-        return hand;
+        return this.hand;
     }
 
     public void setHand(PacketInArmAnimation.Hand hand) {

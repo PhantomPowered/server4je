@@ -57,7 +57,7 @@ public class PacketInWindowConfirmation extends PrimitivePacket {
     }
 
     public int getWindowId() {
-        return windowId;
+        return this.windowId;
     }
 
     public void setWindowId(int windowId) {
@@ -65,7 +65,7 @@ public class PacketInWindowConfirmation extends PrimitivePacket {
     }
 
     public short getActionNumber() {
-        return actionNumber;
+        return this.actionNumber;
     }
 
     public void setActionNumber(short actionNumber) {
@@ -73,7 +73,7 @@ public class PacketInWindowConfirmation extends PrimitivePacket {
     }
 
     public boolean isAccepted() {
-        return accepted;
+        return this.accepted;
     }
 
     public void setAccepted(boolean accepted) {

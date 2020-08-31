@@ -61,7 +61,7 @@ public class PacketInVehicleMove extends PrimitivePacket {
     }
 
     public double getX() {
-        return x;
+        return this.x;
     }
 
     public void setX(double x) {
@@ -69,7 +69,7 @@ public class PacketInVehicleMove extends PrimitivePacket {
     }
 
     public double getY() {
-        return y;
+        return this.y;
     }
 
     public void setY(double y) {
@@ -77,7 +77,7 @@ public class PacketInVehicleMove extends PrimitivePacket {
     }
 
     public double getZ() {
-        return z;
+        return this.z;
     }
 
     public void setZ(double z) {
@@ -85,7 +85,7 @@ public class PacketInVehicleMove extends PrimitivePacket {
     }
 
     public float getYaw() {
-        return yaw;
+        return this.yaw;
     }
 
     public void setYaw(float yaw) {
@@ -93,7 +93,7 @@ public class PacketInVehicleMove extends PrimitivePacket {
     }
 
     public float getPitch() {
-        return pitch;
+        return this.pitch;
     }
 
     public void setPitch(float pitch) {

@@ -57,7 +57,7 @@ public class PacketInSteerVehicle extends PrimitivePacket {
     }
 
     public float getSideways() {
-        return sideways;
+        return this.sideways;
     }
 
     public void setSideways(float sideways) {
@@ -65,7 +65,7 @@ public class PacketInSteerVehicle extends PrimitivePacket {
     }
 
     public float getForward() {
-        return forward;
+        return this.forward;
     }
 
     public void setForward(float forward) {
@@ -73,7 +73,7 @@ public class PacketInSteerVehicle extends PrimitivePacket {
     }
 
     public byte getFlags() {
-        return flags;
+        return this.flags;
     }
 
     public void setFlags(byte flags) {

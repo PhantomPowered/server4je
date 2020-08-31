@@ -60,7 +60,7 @@ public class PacketInTabComplete implements Packet {
     }
 
     public int getTransactionId() {
-        return transactionId;
+        return this.transactionId;
     }
 
     public void setTransactionId(int transactionId) {
@@ -68,7 +68,7 @@ public class PacketInTabComplete implements Packet {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setText(String text) {

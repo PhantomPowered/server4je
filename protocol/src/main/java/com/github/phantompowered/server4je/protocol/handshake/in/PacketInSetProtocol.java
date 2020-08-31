@@ -75,18 +75,18 @@ public class PacketInSetProtocol implements Packet {
     }
 
     public int getProtocolVersion() {
-        return protocolVersion;
+        return this.protocolVersion;
     }
 
     public String getServerAddress() {
-        return serverAddress;
+        return this.serverAddress;
     }
 
     public int getServerPort() {
-        return serverPort;
+        return this.serverPort;
     }
 
     public ProtocolState getRequestedState() {
-        return requestedState;
+        return this.requestedState;
     }
 }

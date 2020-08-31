@@ -59,7 +59,7 @@ public class PacketInSetDisplayedRecipe implements Packet {
     }
 
     public Namespaced getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public void setIdentifier(Namespaced identifier) {

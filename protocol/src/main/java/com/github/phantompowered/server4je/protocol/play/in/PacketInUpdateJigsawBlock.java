@@ -80,7 +80,7 @@ public class PacketInUpdateJigsawBlock implements Packet {
     }
 
     public Location getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(Location position) {
@@ -88,7 +88,7 @@ public class PacketInUpdateJigsawBlock implements Packet {
     }
 
     public Namespaced getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(Namespaced name) {
@@ -96,7 +96,7 @@ public class PacketInUpdateJigsawBlock implements Packet {
     }
 
     public Namespaced getTarget() {
-        return target;
+        return this.target;
     }
 
     public void setTarget(Namespaced target) {
@@ -104,7 +104,7 @@ public class PacketInUpdateJigsawBlock implements Packet {
     }
 
     public Namespaced getPool() {
-        return pool;
+        return this.pool;
     }
 
     public void setPool(Namespaced pool) {
@@ -112,7 +112,7 @@ public class PacketInUpdateJigsawBlock implements Packet {
     }
 
     public String getFinalState() {
-        return finalState;
+        return this.finalState;
     }
 
     public void setFinalState(String finalState) {
@@ -120,7 +120,7 @@ public class PacketInUpdateJigsawBlock implements Packet {
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(Type type) {

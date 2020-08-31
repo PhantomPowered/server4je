@@ -64,11 +64,11 @@ public class PacketInAdvancements implements Packet {
     }
 
     public Action getAction() {
-        return action;
+        return this.action;
     }
 
     public Namespaced getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public enum Action {

@@ -58,7 +58,7 @@ public class PacketInResourcePackStatus implements Packet {
     }
 
     public Status getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(Status status) {

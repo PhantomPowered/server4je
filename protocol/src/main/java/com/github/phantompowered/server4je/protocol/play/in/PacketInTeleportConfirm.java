@@ -53,7 +53,7 @@ public class PacketInTeleportConfirm extends PrimitivePacket {
     }
 
     public int getTeleportId() {
-        return teleportId;
+        return this.teleportId;
     }
 
     public void setTeleportId(int teleportId) {

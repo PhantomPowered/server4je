@@ -66,7 +66,7 @@ public class PacketInUpdateSign implements Packet {
     }
 
     public Location getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(Location position) {
@@ -74,7 +74,7 @@ public class PacketInUpdateSign implements Packet {
     }
 
     public String[] getLines() {
-        return lines;
+        return this.lines;
     }
 
     public void setLines(String[] lines) {

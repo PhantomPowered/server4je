@@ -53,7 +53,7 @@ public class PacketInCloseWindow extends PrimitivePacket {
     }
 
     public int getWindowId() {
-        return windowId;
+        return this.windowId;
     }
 
     public void setWindowId(int windowId) {

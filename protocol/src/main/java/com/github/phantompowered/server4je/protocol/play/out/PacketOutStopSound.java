@@ -87,7 +87,7 @@ public class PacketOutStopSound implements Packet {
     }
 
     public Namespaced getKey() {
-        return key;
+        return this.key;
     }
 
     public void setKey(Namespaced key) {
@@ -95,7 +95,7 @@ public class PacketOutStopSound implements Packet {
     }
 
     public SoundCategory getSoundCategory() {
-        return soundCategory;
+        return this.soundCategory;
     }
 
     public void setSoundCategory(SoundCategory soundCategory) {

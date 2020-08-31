@@ -64,7 +64,7 @@ public class PacketInBookEdit implements Packet {
     }
 
     public ItemStack getItemStack() {
-        return itemStack;
+        return this.itemStack;
     }
 
     public void setItemStack(ItemStack itemStack) {
@@ -72,15 +72,15 @@ public class PacketInBookEdit implements Packet {
     }
 
     public boolean isSigning() {
-        return isSigning;
+        return this.isSigning;
     }
 
     public void setSigning(boolean signing) {
-        isSigning = signing;
+        this.isSigning = signing;
     }
 
     public PacketInArmAnimation.Hand getHand() {
-        return hand;
+        return this.hand;
     }
 
     public void setHand(PacketInArmAnimation.Hand hand) {

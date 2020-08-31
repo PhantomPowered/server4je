@@ -62,7 +62,7 @@ public class PacketInEntityAction implements Packet {
     }
 
     public int getEntityId() {
-        return entityId;
+        return this.entityId;
     }
 
     public void setEntityId(int entityId) {
@@ -70,7 +70,7 @@ public class PacketInEntityAction implements Packet {
     }
 
     public Action getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(Action action) {
@@ -78,7 +78,7 @@ public class PacketInEntityAction implements Packet {
     }
 
     public int getJumpBoost() {
-        return jumpBoost;
+        return this.jumpBoost;
     }
 
     public void setJumpBoost(int jumpBoost) {

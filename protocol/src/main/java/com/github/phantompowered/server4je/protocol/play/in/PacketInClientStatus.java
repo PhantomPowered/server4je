@@ -58,7 +58,7 @@ public class PacketInClientStatus implements Packet {
     }
 
     public ClientStatus getClientStatus() {
-        return clientStatus;
+        return this.clientStatus;
     }
 
     public void setClientStatus(ClientStatus clientStatus) {

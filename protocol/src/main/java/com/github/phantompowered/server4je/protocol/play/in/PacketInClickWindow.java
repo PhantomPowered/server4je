@@ -70,7 +70,7 @@ public class PacketInClickWindow implements Packet {
     }
 
     public int getWindowId() {
-        return windowId;
+        return this.windowId;
     }
 
     public void setWindowId(int windowId) {
@@ -78,7 +78,7 @@ public class PacketInClickWindow implements Packet {
     }
 
     public int getSlot() {
-        return slot;
+        return this.slot;
     }
 
     public void setSlot(int slot) {
@@ -86,7 +86,7 @@ public class PacketInClickWindow implements Packet {
     }
 
     public int getButton() {
-        return button;
+        return this.button;
     }
 
     public void setButton(int button) {
@@ -94,7 +94,7 @@ public class PacketInClickWindow implements Packet {
     }
 
     public short getActionNumber() {
-        return actionNumber;
+        return this.actionNumber;
     }
 
     public void setActionNumber(short actionNumber) {
@@ -102,7 +102,7 @@ public class PacketInClickWindow implements Packet {
     }
 
     public ClickType getClickType() {
-        return clickType;
+        return this.clickType;
     }
 
     public void setClickType(ClickType clickType) {
@@ -110,7 +110,7 @@ public class PacketInClickWindow implements Packet {
     }
 
     public ItemStack getItemStack() {
-        return itemStack;
+        return this.itemStack;
     }
 
     public void setItemStack(ItemStack itemStack) {

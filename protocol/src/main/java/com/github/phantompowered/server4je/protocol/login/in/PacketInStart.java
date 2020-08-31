@@ -58,6 +58,6 @@ public class PacketInStart implements Packet {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 }

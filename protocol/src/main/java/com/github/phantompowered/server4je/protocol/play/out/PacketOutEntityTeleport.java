@@ -90,7 +90,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
     }
 
     public int getEntityId() {
-        return entityId;
+        return this.entityId;
     }
 
     public void setEntityId(int entityId) {
@@ -98,7 +98,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
     }
 
     public double getX() {
-        return x;
+        return this.x;
     }
 
     public void setX(double x) {
@@ -106,7 +106,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
     }
 
     public double getY() {
-        return y;
+        return this.y;
     }
 
     public void setY(double y) {
@@ -114,7 +114,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
     }
 
     public double getZ() {
-        return z;
+        return this.z;
     }
 
     public void setZ(double z) {
@@ -122,7 +122,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
     }
 
     public byte getYaw() {
-        return yaw;
+        return this.yaw;
     }
 
     public void setYaw(byte yaw) {
@@ -130,7 +130,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
     }
 
     public byte getPitch() {
-        return pitch;
+        return this.pitch;
     }
 
     public void setPitch(byte pitch) {
@@ -138,7 +138,7 @@ public class PacketOutEntityTeleport extends PrimitivePacket {
     }
 
     public boolean isOnGround() {
-        return onGround;
+        return this.onGround;
     }
 
     public void setOnGround(boolean onGround) {

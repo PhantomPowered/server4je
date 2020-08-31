@@ -81,7 +81,7 @@ public class PacketInPlayerBlockPlacement implements Packet {
     }
 
     public PacketInArmAnimation.Hand getHand() {
-        return hand;
+        return this.hand;
     }
 
     public void setHand(PacketInArmAnimation.Hand hand) {
@@ -89,7 +89,7 @@ public class PacketInPlayerBlockPlacement implements Packet {
     }
 
     public MovingPositionBlock getPositionBlock() {
-        return positionBlock;
+        return this.positionBlock;
     }
 
     public void setPositionBlock(MovingPositionBlock positionBlock) {

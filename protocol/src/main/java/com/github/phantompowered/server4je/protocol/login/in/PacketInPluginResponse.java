@@ -75,7 +75,7 @@ public class PacketInPluginResponse implements Packet {
     }
 
     public int getMessageId() {
-        return messageId;
+        return this.messageId;
     }
 
     public void setMessageId(int messageId) {
@@ -83,7 +83,7 @@ public class PacketInPluginResponse implements Packet {
     }
 
     public Result getResult() {
-        return result;
+        return this.result;
     }
 
     public void setResult(Result result) {
@@ -91,7 +91,7 @@ public class PacketInPluginResponse implements Packet {
     }
 
     public byte[] getData() {
-        return data;
+        return this.data;
     }
 
     public void setData(byte[] data) {

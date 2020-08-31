@@ -94,7 +94,7 @@ public class PacketOutEntityEffect extends PrimitivePacket {
     }
 
     public int getEntityId() {
-        return entityId;
+        return this.entityId;
     }
 
     public void setEntityId(int entityId) {
@@ -102,7 +102,7 @@ public class PacketOutEntityEffect extends PrimitivePacket {
     }
 
     public int getEffectId() {
-        return effectId;
+        return this.effectId;
     }
 
     public void setEffectId(int effectId) {
@@ -110,7 +110,7 @@ public class PacketOutEntityEffect extends PrimitivePacket {
     }
 
     public byte getAmplifier() {
-        return amplifier;
+        return this.amplifier;
     }
 
     public void setAmplifier(byte amplifier) {
@@ -118,7 +118,7 @@ public class PacketOutEntityEffect extends PrimitivePacket {
     }
 
     public int getDuration() {
-        return duration;
+        return this.duration;
     }
 
     public void setDuration(int duration) {
@@ -126,7 +126,7 @@ public class PacketOutEntityEffect extends PrimitivePacket {
     }
 
     public byte getFlags() {
-        return flags;
+        return this.flags;
     }
 
     public void setFlags(byte flags) {

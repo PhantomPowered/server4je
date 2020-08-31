@@ -61,7 +61,7 @@ public class PacketInSetDifficulty implements Packet {
     }
 
     public Difficulty getDifficulty() {
-        return difficulty;
+        return this.difficulty;
     }
 
     public void setDifficulty(Difficulty difficulty) {

@@ -68,7 +68,7 @@ public class PacketOutUpdateHealth extends PrimitivePacket {
     }
 
     public float getHealth() {
-        return health;
+        return this.health;
     }
 
     public void setHealth(float health) {
@@ -76,7 +76,7 @@ public class PacketOutUpdateHealth extends PrimitivePacket {
     }
 
     public int getFood() {
-        return food;
+        return this.food;
     }
 
     public void setFood(int food) {
@@ -84,7 +84,7 @@ public class PacketOutUpdateHealth extends PrimitivePacket {
     }
 
     public float getFoodSaturation() {
-        return foodSaturation;
+        return this.foodSaturation;
     }
 
     public void setFoodSaturation(float foodSaturation) {

@@ -64,7 +64,7 @@ public class PacketInGenerateStructure implements Packet {
     }
 
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     public void setLocation(Location location) {
@@ -72,7 +72,7 @@ public class PacketInGenerateStructure implements Packet {
     }
 
     public int getLevels() {
-        return levels;
+        return this.levels;
     }
 
     public void setLevels(int levels) {
@@ -80,7 +80,7 @@ public class PacketInGenerateStructure implements Packet {
     }
 
     public boolean isKeepJigsaws() {
-        return keepJigsaws;
+        return this.keepJigsaws;
     }
 
     public void setKeepJigsaws(boolean keepJigsaws) {

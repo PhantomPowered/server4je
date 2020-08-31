@@ -61,7 +61,7 @@ public class PacketInCreativeInventoryAction implements Packet {
     }
 
     public int getSlot() {
-        return slot;
+        return this.slot;
     }
 
     public void setSlot(int slot) {
@@ -69,7 +69,7 @@ public class PacketInCreativeInventoryAction implements Packet {
     }
 
     public ItemStack getItemStack() {
-        return itemStack;
+        return this.itemStack;
     }
 
     public void setItemStack(ItemStack itemStack) {

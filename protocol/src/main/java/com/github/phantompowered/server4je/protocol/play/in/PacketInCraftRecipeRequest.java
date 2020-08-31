@@ -63,7 +63,7 @@ public class PacketInCraftRecipeRequest implements Packet {
     }
 
     public int getWindowId() {
-        return windowId;
+        return this.windowId;
     }
 
     public void setWindowId(int windowId) {
@@ -71,7 +71,7 @@ public class PacketInCraftRecipeRequest implements Packet {
     }
 
     public Namespaced getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public void setIdentifier(Namespaced identifier) {
@@ -79,7 +79,7 @@ public class PacketInCraftRecipeRequest implements Packet {
     }
 
     public boolean isMakeAll() {
-        return makeAll;
+        return this.makeAll;
     }
 
     public void setMakeAll(boolean makeAll) {

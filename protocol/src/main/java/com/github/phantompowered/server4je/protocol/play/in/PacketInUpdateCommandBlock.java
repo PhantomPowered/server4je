@@ -68,7 +68,7 @@ public class PacketInUpdateCommandBlock implements Packet {
     }
 
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     public void setLocation(Location location) {
@@ -76,7 +76,7 @@ public class PacketInUpdateCommandBlock implements Packet {
     }
 
     public String getCommand() {
-        return command;
+        return this.command;
     }
 
     public void setCommand(String command) {
@@ -84,7 +84,7 @@ public class PacketInUpdateCommandBlock implements Packet {
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(Type type) {
@@ -92,7 +92,7 @@ public class PacketInUpdateCommandBlock implements Packet {
     }
 
     public byte getFlags() {
-        return flags;
+        return this.flags;
     }
 
     public void setFlags(byte flags) {

@@ -55,7 +55,7 @@ public class PacketInSteerBoat extends PrimitivePacket {
     }
 
     public boolean isLeftPaddleTurning() {
-        return leftPaddleTurning;
+        return this.leftPaddleTurning;
     }
 
     public void setLeftPaddleTurning(boolean leftPaddleTurning) {
@@ -63,7 +63,7 @@ public class PacketInSteerBoat extends PrimitivePacket {
     }
 
     public boolean isRightPaddleTurning() {
-        return rightPaddleTurning;
+        return this.rightPaddleTurning;
     }
 
     public void setRightPaddleTurning(boolean rightPaddleTurning) {

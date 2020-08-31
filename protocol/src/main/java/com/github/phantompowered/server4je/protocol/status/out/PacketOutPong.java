@@ -60,7 +60,7 @@ public class PacketOutPong extends PrimitivePacket {
     }
 
     public long getClientPayload() {
-        return clientPayload;
+        return this.clientPayload;
     }
 
     public void setClientPayload(long clientPayload) {

@@ -61,7 +61,7 @@ public class PacketInEncryptionResponse implements Packet {
     }
 
     public byte[] getSharedSecret() {
-        return sharedSecret;
+        return this.sharedSecret;
     }
 
     public void setSharedSecret(byte[] sharedSecret) {
@@ -69,7 +69,7 @@ public class PacketInEncryptionResponse implements Packet {
     }
 
     public byte[] getVerifyToken() {
-        return verifyToken;
+        return this.verifyToken;
     }
 
     public void setVerifyToken(byte[] verifyToken) {

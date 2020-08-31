@@ -73,7 +73,7 @@ public class PacketOutEntityDestroy implements Packet {
     }
 
     public int[] getEntityIds() {
-        return entityIds;
+        return this.entityIds;
     }
 
     public void setEntityIds(int[] entityIds) {

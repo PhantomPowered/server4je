@@ -53,7 +53,7 @@ public class PacketInPickItem extends PrimitivePacket {
     }
 
     public int getSlot() {
-        return slot;
+        return this.slot;
     }
 
     public void setSlot(int slot) {

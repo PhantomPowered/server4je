@@ -58,7 +58,7 @@ public class PacketInNameItem implements Packet {
     }
 
     public String getItemName() {
-        return itemName;
+        return this.itemName;
     }
 
     public void setItemName(String itemName) {

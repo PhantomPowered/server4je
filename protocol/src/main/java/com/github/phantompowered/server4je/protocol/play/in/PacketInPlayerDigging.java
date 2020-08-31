@@ -68,7 +68,7 @@ public class PacketInPlayerDigging implements Packet {
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(Type type) {
@@ -76,7 +76,7 @@ public class PacketInPlayerDigging implements Packet {
     }
 
     public Location getBlockLocation() {
-        return blockLocation;
+        return this.blockLocation;
     }
 
     public void setBlockLocation(Location blockLocation) {
@@ -84,7 +84,7 @@ public class PacketInPlayerDigging implements Packet {
     }
 
     public BlockFace getFacing() {
-        return facing;
+        return this.facing;
     }
 
     public void setFacing(BlockFace facing) {

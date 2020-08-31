@@ -74,7 +74,7 @@ public class PacketOutSuccess implements Packet {
     }
 
     public UUID getPlayerUniqueId() {
-        return playerUniqueId;
+        return this.playerUniqueId;
     }
 
     public void setPlayerUniqueId(UUID playerUniqueId) {
@@ -82,7 +82,7 @@ public class PacketOutSuccess implements Packet {
     }
 
     public String getUserName() {
-        return userName;
+        return this.userName;
     }
 
     public void setUserName(String userName) {

@@ -86,7 +86,7 @@ public class PacketOutCustomSoundEffect implements Packet {
     }
 
     public Namespaced getKey() {
-        return key;
+        return this.key;
     }
 
     public void setKey(Namespaced key) {
@@ -94,7 +94,7 @@ public class PacketOutCustomSoundEffect implements Packet {
     }
 
     public SoundCategory getSoundCategory() {
-        return soundCategory;
+        return this.soundCategory;
     }
 
     public void setSoundCategory(SoundCategory soundCategory) {
@@ -102,7 +102,7 @@ public class PacketOutCustomSoundEffect implements Packet {
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public void setX(int x) {
@@ -110,7 +110,7 @@ public class PacketOutCustomSoundEffect implements Packet {
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public void setY(int y) {
@@ -118,7 +118,7 @@ public class PacketOutCustomSoundEffect implements Packet {
     }
 
     public int getZ() {
-        return z;
+        return this.z;
     }
 
     public void setZ(int z) {
@@ -126,7 +126,7 @@ public class PacketOutCustomSoundEffect implements Packet {
     }
 
     public float getVolume() {
-        return volume;
+        return this.volume;
     }
 
     public void setVolume(float volume) {
@@ -134,7 +134,7 @@ public class PacketOutCustomSoundEffect implements Packet {
     }
 
     public float getPitch() {
-        return pitch;
+        return this.pitch;
     }
 
     public void setPitch(float pitch) {

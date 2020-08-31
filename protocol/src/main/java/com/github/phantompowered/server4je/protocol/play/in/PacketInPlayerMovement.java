@@ -72,7 +72,7 @@ public class PacketInPlayerMovement implements Packet {
     }
 
     public boolean isOnGround() {
-        return onGround;
+        return this.onGround;
     }
 
     public void setOnGround(boolean onGround) {
@@ -81,7 +81,7 @@ public class PacketInPlayerMovement implements Packet {
 
     @Nullable
     public Double getX() {
-        return x;
+        return this.x;
     }
 
     public void setX(Double x) {
@@ -90,7 +90,7 @@ public class PacketInPlayerMovement implements Packet {
 
     @Nullable
     public Double getY() {
-        return y;
+        return this.y;
     }
 
     public void setY(Double y) {
@@ -99,7 +99,7 @@ public class PacketInPlayerMovement implements Packet {
 
     @Nullable
     public Double getZ() {
-        return z;
+        return this.z;
     }
 
     public void setZ(Double z) {
@@ -108,7 +108,7 @@ public class PacketInPlayerMovement implements Packet {
 
     @Nullable
     public Float getYaw() {
-        return yaw;
+        return this.yaw;
     }
 
     public void setYaw(Float yaw) {
@@ -117,7 +117,7 @@ public class PacketInPlayerMovement implements Packet {
 
     @Nullable
     public Float getPitch() {
-        return pitch;
+        return this.pitch;
     }
 
     public void setPitch(Float pitch) {

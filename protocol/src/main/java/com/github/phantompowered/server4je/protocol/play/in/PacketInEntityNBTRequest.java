@@ -55,7 +55,7 @@ public class PacketInEntityNBTRequest extends PrimitivePacket {
     }
 
     public int getTransactionId() {
-        return transactionId;
+        return this.transactionId;
     }
 
     public void setTransactionId(int transactionId) {
@@ -63,7 +63,7 @@ public class PacketInEntityNBTRequest extends PrimitivePacket {
     }
 
     public int getEntityId() {
-        return entityId;
+        return this.entityId;
     }
 
     public void setEntityId(int entityId) {

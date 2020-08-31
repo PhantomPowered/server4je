@@ -73,7 +73,7 @@ public class PacketOutEncryptionRequest implements Packet {
     }
 
     public String getServerId() {
-        return serverId;
+        return this.serverId;
     }
 
     public void setServerId(String serverId) {
@@ -81,7 +81,7 @@ public class PacketOutEncryptionRequest implements Packet {
     }
 
     public byte[] getPublicKey() {
-        return publicKey;
+        return this.publicKey;
     }
 
     public void setPublicKey(byte[] publicKey) {
@@ -89,7 +89,7 @@ public class PacketOutEncryptionRequest implements Packet {
     }
 
     public byte[] getVerifyToken() {
-        return verifyToken;
+        return this.verifyToken;
     }
 
     public void setVerifyToken(byte[] verifyToken) {

@@ -58,7 +58,7 @@ public class PacketInClickWindowButton extends PrimitivePacket {
     }
 
     public int getWindowId() {
-        return windowId;
+        return this.windowId;
     }
 
     public void setWindowId(int windowId) {
@@ -66,7 +66,7 @@ public class PacketInClickWindowButton extends PrimitivePacket {
     }
 
     public int getButtonId() {
-        return buttonId;
+        return this.buttonId;
     }
 
     public void setButtonId(int buttonId) {

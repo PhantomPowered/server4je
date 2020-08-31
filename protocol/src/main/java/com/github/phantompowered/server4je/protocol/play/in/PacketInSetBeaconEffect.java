@@ -55,7 +55,7 @@ public class PacketInSetBeaconEffect extends PrimitivePacket {
     }
 
     public int getPrimaryEffect() {
-        return primaryEffect;
+        return this.primaryEffect;
     }
 
     public void setPrimaryEffect(int primaryEffect) {
@@ -63,7 +63,7 @@ public class PacketInSetBeaconEffect extends PrimitivePacket {
     }
 
     public int getSecondaryEffect() {
-        return secondaryEffect;
+        return this.secondaryEffect;
     }
 
     public void setSecondaryEffect(int secondaryEffect) {

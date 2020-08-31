@@ -62,7 +62,7 @@ public class PacketInUpdateCommandBlockMinecart implements Packet {
     }
 
     public int getEntityId() {
-        return entityId;
+        return this.entityId;
     }
 
     public void setEntityId(int entityId) {
@@ -70,7 +70,7 @@ public class PacketInUpdateCommandBlockMinecart implements Packet {
     }
 
     public String getCommand() {
-        return command;
+        return this.command;
     }
 
     public void setCommand(String command) {
@@ -78,7 +78,7 @@ public class PacketInUpdateCommandBlockMinecart implements Packet {
     }
 
     public boolean isTrackOutput() {
-        return trackOutput;
+        return this.trackOutput;
     }
 
     public void setTrackOutput(boolean trackOutput) {

@@ -61,7 +61,7 @@ public class PacketInLockDifficulty extends PrimitivePacket {
     }
 
     public boolean isLocked() {
-        return locked;
+        return this.locked;
     }
 
     @Note("Using the api it's possible to unlock the setting even it's not handled")

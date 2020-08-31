@@ -58,7 +58,7 @@ public class PacketInChatMessage implements Packet {
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public void setMessage(String message) {

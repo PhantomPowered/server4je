@@ -75,7 +75,7 @@ public class PacketInInteractEntity implements Packet {
     }
 
     public int getEntityId() {
-        return entityId;
+        return this.entityId;
     }
 
     public void setEntityId(int entityId) {
@@ -83,7 +83,7 @@ public class PacketInInteractEntity implements Packet {
     }
 
     public UseAction getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(UseAction action) {
@@ -91,7 +91,7 @@ public class PacketInInteractEntity implements Packet {
     }
 
     public Vector getVector() {
-        return vector;
+        return this.vector;
     }
 
     public void setVector(Vector vector) {
@@ -99,7 +99,7 @@ public class PacketInInteractEntity implements Packet {
     }
 
     public PacketInArmAnimation.Hand getHand() {
-        return hand;
+        return this.hand;
     }
 
     public void setHand(PacketInArmAnimation.Hand hand) {
@@ -107,7 +107,7 @@ public class PacketInInteractEntity implements Packet {
     }
 
     public boolean isSneaking() {
-        return sneaking;
+        return this.sneaking;
     }
 
     public void setSneaking(boolean sneaking) {

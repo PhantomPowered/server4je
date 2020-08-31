@@ -51,20 +51,20 @@ public class MovingPositionBlock extends MovingPosition {
 
     @NotNull
     public BlockFace getBlockFace() {
-        return blockFace;
+        return this.blockFace;
     }
 
     @NotNull
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     public boolean isInsideBlock() {
-        return insideBlock;
+        return this.insideBlock;
     }
 
     @NotNull
     public MovingType getType() {
-        return type;
+        return this.type;
     }
 }

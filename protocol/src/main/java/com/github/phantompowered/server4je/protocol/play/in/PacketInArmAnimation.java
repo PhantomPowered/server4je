@@ -58,7 +58,7 @@ public class PacketInArmAnimation implements Packet {
     }
 
     public Hand getHand() {
-        return hand;
+        return this.hand;
     }
 
     public enum Hand {

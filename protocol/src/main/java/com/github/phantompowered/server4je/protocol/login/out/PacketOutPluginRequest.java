@@ -73,7 +73,7 @@ public class PacketOutPluginRequest implements Packet {
     }
 
     public int getMessageId() {
-        return messageId;
+        return this.messageId;
     }
 
     public void setMessageId(int messageId) {
@@ -81,7 +81,7 @@ public class PacketOutPluginRequest implements Packet {
     }
 
     public Namespaced getChannel() {
-        return channel;
+        return this.channel;
     }
 
     public void setChannel(Namespaced channel) {
@@ -89,7 +89,7 @@ public class PacketOutPluginRequest implements Packet {
     }
 
     public byte[] getData() {
-        return data;
+        return this.data;
     }
 
     public void setData(byte[] data) {

@@ -53,7 +53,7 @@ public class PacketInSelectTrade extends PrimitivePacket {
     }
 
     public int getSelectedSlot() {
-        return selectedSlot;
+        return this.selectedSlot;
     }
 
     public void setSelectedSlot(int selectedSlot) {
