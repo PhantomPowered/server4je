@@ -22,40 +22,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.protocol.handshake;
+package com.github.phantompowered.server4je.protocol.status.in;
 
-import com.github.phantompowered.server4je.protocol.Packet;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
+import com.github.phantompowered.server4je.protocol.defaults.PrimitivePacket;
 import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyFromClientException;
 import com.github.phantompowered.server4je.protocol.id.PacketIdUtil;
 import com.github.phantompowered.server4je.protocol.state.ProtocolState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-public class PacketInSetProtocol implements Packet {
+public class PacketInPing extends PrimitivePacket {
 
-    private int protocolVersion;
-    private String serverAddress;
-    private int serverPort;
-    private ProtocolState requestedState;
+    private long payload;
 
-    public PacketInSetProtocol() {
-    }
-
-    public PacketInSetProtocol(int protocolVersion, String serverAddress, short serverPort, ProtocolState requestedState) {
-        this.protocolVersion = protocolVersion;
-        this.serverAddress = serverAddress;
-        this.serverPort = serverPort;
-        this.requestedState = requestedState;
+    public PacketInPing() {
     }
 
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
-        this.protocolVersion = dataBuffer.readVarInt();
-        this.serverAddress = dataBuffer.readString(255);
-        this.serverPort = dataBuffer.readUnsignedShort();
-        this.requestedState = ProtocolState.getStateById(dataBuffer.readVarInt());
+        this.payload = dataBuffer.readLong();
     }
 
     @Override
@@ -64,29 +51,11 @@ public class PacketInSetProtocol implements Packet {
     }
 
     @Override
-    public void releaseData() {
-        this.serverAddress = null;
-        this.requestedState = null;
-    }
-
-    @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getClientPacketId(ProtocolState.HANDSHAKING, PacketInSetProtocol.class);
+        return PacketIdUtil.getClientPacketId(ProtocolState.STATUS, PacketInPing.class);
     }
 
-    public int getProtocolVersion() {
-        return protocolVersion;
-    }
-
-    public String getServerAddress() {
-        return serverAddress;
-    }
-
-    public int getServerPort() {
-        return serverPort;
-    }
-
-    public ProtocolState getRequestedState() {
-        return requestedState;
+    public long getPayload() {
+        return payload;
     }
 }

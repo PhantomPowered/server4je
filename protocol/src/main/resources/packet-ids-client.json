@@ -1,10 +1,11 @@
 {
   "HANDSHAKING": {
-    "com.github.phantompowered.server4je.protocol.handshake.PacketInSetProtocol": 0
+    "com.github.phantompowered.server4je.protocol.handshake.in.PacketInSetProtocol": 0
   },
   "LOGIN": {
   },
   "STATUS": {
+    "com.github.phantompowered.server4je.protocol.status.in.PacketInPing": 1
   },
   "PLAY": {
   }
