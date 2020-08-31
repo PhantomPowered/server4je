@@ -54,6 +54,10 @@ public class MathHelper {
         return Math.min(Math.max(num, min), max);
     }
 
+    public static float clamp(float num, float min, float max) {
+        return Math.min(Math.max(num, min), max);
+    }
+
     public static int roundUpToPowerOfTwo(int value) {
         int i = value - 1;
         i = i | i >> 1;
