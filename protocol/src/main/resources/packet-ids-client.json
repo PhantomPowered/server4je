@@ -5,6 +5,7 @@
   "LOGIN": {
   },
   "STATUS": {
+    "com.github.phantompowered.server4je.protocol.status.in.PacketInStart": 0,
     "com.github.phantompowered.server4je.protocol.status.in.PacketInPing": 1
   },
   "PLAY": {
