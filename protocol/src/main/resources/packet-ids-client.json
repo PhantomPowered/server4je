@@ -32,6 +32,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInEntityAction": 28,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAdvancements": 34,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSetBeaconEffect": 36,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInHeldItemChange": 37,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInArmAnimation": 44,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInUseItem": 47
   }
