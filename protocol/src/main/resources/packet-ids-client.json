@@ -34,6 +34,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAbilities": 26,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerDigging": 27,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInEntityAction": 28,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInSteerVehicle": 29,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSetRecipeBookState": 30,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSetDisplayedRecipe": 31,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInNameItem": 32,
