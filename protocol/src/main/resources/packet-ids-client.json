@@ -3,6 +3,7 @@
     "com.github.phantompowered.server4je.protocol.handshake.in.PacketInSetProtocol": 0
   },
   "LOGIN": {
+    "com.github.phantompowered.server4je.protocol.login.in.PacketInStart": 0
   },
   "STATUS": {
     "com.github.phantompowered.server4je.protocol.status.in.PacketInStart": 0,

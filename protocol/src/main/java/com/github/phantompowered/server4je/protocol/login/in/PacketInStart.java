@@ -22,70 +22,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.protocol.login.out;
+package com.github.phantompowered.server4je.protocol.login.in;
 
 import com.github.phantompowered.server4je.protocol.Packet;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
-import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyToClientException;
+import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyFromClientException;
 import com.github.phantompowered.server4je.protocol.id.PacketIdUtil;
 import com.github.phantompowered.server4je.protocol.state.ProtocolState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-import java.util.UUID;
+public class PacketInStart implements Packet {
 
-public class PacketOutSuccess implements Packet {
-
-    private UUID playerUniqueId;
-    private String userName;
-
-    public PacketOutSuccess() {
-    }
-
-    public PacketOutSuccess(UUID playerUniqueId, String userName) {
-        this.playerUniqueId = playerUniqueId;
-        this.userName = userName;
-    }
+    private String username;
 
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
-        PacketOnlyToClientException.throwNow();
+        this.username = dataBuffer.readString(16);
     }
 
     @Override
     public void writeData(@NotNull @BufferStatus(BufferStatus.Status.EMPTY) DataBuffer dataBuffer) {
-        dataBuffer.writeInt((int) (this.playerUniqueId.getMostSignificantBits() >> 32));
-        dataBuffer.writeInt((int) this.playerUniqueId.getMostSignificantBits());
-        dataBuffer.writeInt((int) (this.playerUniqueId.getLeastSignificantBits() >> 32));
-        dataBuffer.writeInt((int) this.playerUniqueId.getLeastSignificantBits());
-        dataBuffer.writeString(this.userName, 16);
+        PacketOnlyFromClientException.throwNow();
     }
 
     @Override
     public void releaseData() {
-        this.playerUniqueId = null;
-        this.userName = null;
+        this.username = null;
     }
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getServerPacketId(ProtocolState.LOGIN, PacketOutSuccess.class);
+        return PacketIdUtil.getClientPacketId(ProtocolState.LOGIN, PacketInStart.class);
     }
 
-    public UUID getPlayerUniqueId() {
-        return playerUniqueId;
-    }
-
-    public void setPlayerUniqueId(UUID playerUniqueId) {
-        this.playerUniqueId = playerUniqueId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String getUsername() {
+        return username;
     }
 }
