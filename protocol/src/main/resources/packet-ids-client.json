@@ -46,6 +46,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCreativeInventoryAction": 40,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInUpdateJigsawBlock": 41,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInArmAnimation": 44,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInSpectatePlayer": 45,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInUseItem": 47
   }
 }
