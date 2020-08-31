@@ -28,6 +28,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerMovementLook": 20,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerMovement": 21,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSteerBoat": 23,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInPickItem": 24,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCraftRecipeRequest": 25,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAbilities": 26,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerDigging": 27,
