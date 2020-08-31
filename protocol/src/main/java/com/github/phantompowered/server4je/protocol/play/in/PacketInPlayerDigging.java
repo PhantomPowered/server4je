@@ -24,27 +24,53 @@
  */
 package com.github.phantompowered.server4je.protocol.play.in;
 
+import com.github.phantompowered.server4je.common.exception.ReportedException;
 import com.github.phantompowered.server4je.protocol.Packet;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
 import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyFromClientException;
 import com.github.phantompowered.server4je.protocol.id.PacketIdUtil;
 import com.github.phantompowered.server4je.protocol.state.ProtocolState;
-import org.bukkit.inventory.ItemStack;
+import com.github.phantompowered.server4je.protocol.utils.LocationUtil;
+import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-public class PacketInBookEdit implements Packet {
+public class PacketInPlayerDigging implements Packet {
 
-    private ItemStack itemStack;
-    private boolean isSigning;
-    private PacketInArmAnimation.Hand hand;
+    private Type type;
+    private Location blockLocation;
+    private BlockFace facing;
 
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
-        // TODO: this.itemStack = dataBuffer.readItemStack();
-        this.isSigning = dataBuffer.readBoolean();
-        this.hand = PacketInArmAnimation.Hand.values()[dataBuffer.readVarInt()];
+        this.type = Type.values()[dataBuffer.readVarInt()];
+        this.blockLocation = LocationUtil.locationFromLong(dataBuffer.readLong());
+
+        int type = dataBuffer.readUnsignedByte();
+        switch (type) {
+            case 0:
+                this.facing = BlockFace.DOWN;
+                break;
+            case 1:
+                this.facing = BlockFace.UP;
+                break;
+            case 2:
+                this.facing = BlockFace.NORTH;
+                break;
+            case 3:
+                this.facing = BlockFace.SOUTH;
+                break;
+            case 4:
+                this.facing = BlockFace.WEST;
+                break;
+            case 5:
+                this.facing = BlockFace.EAST;
+                break;
+            default:
+                ReportedException.throwWrapped("Illegal byte enum block face received: " + type);
+        }
     }
 
     @Override
@@ -54,36 +80,48 @@ public class PacketInBookEdit implements Packet {
 
     @Override
     public void releaseData() {
-        this.itemStack = null;
-        this.hand = null;
+        this.facing = null;
+        this.blockLocation = null;
+        this.type = null;
     }
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInBookEdit.class);
+        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInPlayerDigging.class);
     }
 
-    public ItemStack getItemStack() {
-        return itemStack;
+    public Type getType() {
+        return type;
     }
 
-    public void setItemStack(ItemStack itemStack) {
-        this.itemStack = itemStack;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public boolean isSigning() {
-        return isSigning;
+    public Location getBlockLocation() {
+        return blockLocation;
     }
 
-    public void setSigning(boolean signing) {
-        isSigning = signing;
+    public void setBlockLocation(Location blockLocation) {
+        this.blockLocation = blockLocation;
     }
 
-    public PacketInArmAnimation.Hand getHand() {
-        return hand;
+    public BlockFace getFacing() {
+        return facing;
     }
 
-    public void setHand(PacketInArmAnimation.Hand hand) {
-        this.hand = hand;
+    public void setFacing(BlockFace facing) {
+        this.facing = facing;
+    }
+
+    public enum Type {
+
+        START_DESTROY_BLOCK,
+        ABORT_DESTROY_BLOCK,
+        STOP_DESTROY_BLOCK,
+        DROP_ALL_ITEMS,
+        DROP_ITEM,
+        RELEASE_USE_ITEM,
+        SWAP_ITEM_WITH_OFFHAND
     }
 }
