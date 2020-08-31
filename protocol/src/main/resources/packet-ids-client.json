@@ -25,6 +25,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCustomPayload": 11,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInBookEdit": 12,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInEntityNBTRequest": 13,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInInteractEntity": 14,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInGenerateStructure": 15,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInKeepAlive": 16,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInLockDifficulty": 17,
