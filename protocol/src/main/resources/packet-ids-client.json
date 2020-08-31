@@ -12,5 +12,6 @@
     "com.github.phantompowered.server4je.protocol.status.in.PacketInPing": 1
   },
   "PLAY": {
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInAbilities": 26
   }
 }
