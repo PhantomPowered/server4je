@@ -4,6 +4,7 @@
   "LOGIN": {
   },
   "STATUS": {
+    "com.github.phantompowered.server4je.protocol.status.out.PacketOutResponse": 0,
     "com.github.phantompowered.server4je.protocol.status.out.PacketOutPong": 1
   },
   "PLAY": {
