@@ -19,6 +19,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInClientStatus": 4,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInClientSettings": 5,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInTabComplete": 6,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInWindowConfirmation": 7,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInClickWindowButton": 8,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCloseWindow": 10,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCustomPayload": 11,
