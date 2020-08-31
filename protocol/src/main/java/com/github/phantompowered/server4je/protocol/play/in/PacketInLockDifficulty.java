@@ -24,25 +24,30 @@
  */
 package com.github.phantompowered.server4je.protocol.play.in;
 
+import com.github.phantompowered.server4je.common.annotation.Always;
 import com.github.phantompowered.server4je.common.annotation.Note;
-import com.github.phantompowered.server4je.protocol.Packet;
+import com.github.phantompowered.server4je.common.exception.ReportedException;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
+import com.github.phantompowered.server4je.protocol.defaults.PrimitivePacket;
 import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyFromClientException;
 import com.github.phantompowered.server4je.protocol.id.PacketIdUtil;
 import com.github.phantompowered.server4je.protocol.state.ProtocolState;
-import org.bukkit.Difficulty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
 @Note("Normally only used in single-player (we implement it in multiplayer too). Needs op-level 2")
-public class PacketInSetDifficulty implements Packet {
+public class PacketInLockDifficulty extends PrimitivePacket {
 
-    private Difficulty difficulty;
+    @Always(value = "true", reason = "If the difficulty is locked it cannot get unlocked (we don't handle 'false')")
+    private boolean locked;
 
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
-        this.difficulty = Difficulty.values()[dataBuffer.readByte()];
+        this.locked = dataBuffer.readBoolean();
+        if (!this.locked) {
+            ReportedException.throwWrapped("Client tried to unlock the server world difficulty");
+        }
     }
 
     @Override
@@ -51,20 +56,16 @@ public class PacketInSetDifficulty implements Packet {
     }
 
     @Override
-    public void releaseData() {
-        this.difficulty = null;
-    }
-
-    @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInSetDifficulty.class);
+        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInLockDifficulty.class);
     }
 
-    public Difficulty getDifficulty() {
-        return difficulty;
+    public boolean isLocked() {
+        return locked;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
+    @Note("Using the api it's possible to unlock the setting even it's not handled")
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

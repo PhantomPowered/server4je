@@ -18,6 +18,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCloseWindow": 10,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCustomPayload": 11,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInBookEdit": 12,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInLockDifficulty": 17,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSteerBoat": 23,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCraftRecipeRequest": 25,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInAbilities": 26,
