@@ -41,6 +41,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSetBeaconEffect": 36,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInHeldItemChange": 37,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInUpdateCommandBlock": 38,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInUpdateCommandBlockMinecart": 39,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInArmAnimation": 44,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInUseItem": 47
   }
