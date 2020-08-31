@@ -33,6 +33,7 @@
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerMovementPositionLook": 19,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerMovementLook": 20,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPlayerMovement": 21,
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInVehicleMove": 22,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInSteerBoat": 23,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInPickItem": 24,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCraftRecipeRequest": 25,
