@@ -12,6 +12,7 @@
     "com.github.phantompowered.server4je.protocol.status.in.PacketInPing": 1
   },
   "PLAY": {
+    "com.github.phantompowered.server4je.protocol.play.in.PacketInSetDifficulty": 2,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInChatMessage": 3,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInClientStatus": 4,
     "com.github.phantompowered.server4je.protocol.play.in.PacketInCloseWindow": 10,
