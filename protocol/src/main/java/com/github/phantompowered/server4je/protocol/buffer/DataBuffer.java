@@ -28,6 +28,7 @@ import com.destroystokyo.paper.Namespaced;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.util.ByteProcessor;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
@@ -88,6 +89,11 @@ public abstract class DataBuffer extends ByteBuf {
     public abstract byte[] toBytes();
 
     public abstract void writeStringCollection(@NotNull Collection<String> list);
+
+    @NotNull
+    public abstract ItemStack readItemStack();
+
+    public abstract void writeItemStack(@NotNull ItemStack itemStack);
 
     @NotNull
     public abstract List<String> readStringCollection();

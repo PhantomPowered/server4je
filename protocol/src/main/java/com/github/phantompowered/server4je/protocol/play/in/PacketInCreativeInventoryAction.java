@@ -34,17 +34,15 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-public class PacketInBookEdit implements Packet {
+public class PacketInCreativeInventoryAction implements Packet {
 
+    private int slot;
     private ItemStack itemStack;
-    private boolean isSigning;
-    private PacketInArmAnimation.Hand hand;
 
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
+        this.slot = dataBuffer.readShort();
         this.itemStack = dataBuffer.readItemStack();
-        this.isSigning = dataBuffer.readBoolean();
-        this.hand = PacketInArmAnimation.Hand.values()[dataBuffer.readVarInt()];
     }
 
     @Override
@@ -55,12 +53,19 @@ public class PacketInBookEdit implements Packet {
     @Override
     public void releaseData() {
         this.itemStack = null;
-        this.hand = null;
     }
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInBookEdit.class);
+        return PacketIdUtil.getClientPacketId(ProtocolState.PLAY, PacketInCreativeInventoryAction.class);
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public void setSlot(int slot) {
+        this.slot = slot;
     }
 
     public ItemStack getItemStack() {
@@ -69,21 +74,5 @@ public class PacketInBookEdit implements Packet {
 
     public void setItemStack(ItemStack itemStack) {
         this.itemStack = itemStack;
-    }
-
-    public boolean isSigning() {
-        return isSigning;
-    }
-
-    public void setSigning(boolean signing) {
-        isSigning = signing;
-    }
-
-    public PacketInArmAnimation.Hand getHand() {
-        return hand;
-    }
-
-    public void setHand(PacketInArmAnimation.Hand hand) {
-        this.hand = hand;
     }
 }
