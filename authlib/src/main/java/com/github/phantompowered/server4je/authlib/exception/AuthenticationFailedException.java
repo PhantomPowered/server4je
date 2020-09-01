@@ -22,29 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common;
+package com.github.phantompowered.server4je.authlib.exception;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.jetbrains.annotations.NotNull;
+public class AuthenticationFailedException extends RuntimeException {
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+    private static final long serialVersionUID = -2087604888562543926L;
 
-public final class CommonConstants {
-
-    private CommonConstants() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
-    }
-
-    private static final ThreadLocal<Gson> GSON = ThreadLocal
-        .withInitial(() -> new GsonBuilder().disableHtmlEscaping().serializeNulls().setPrettyPrinting().create());
-
-    public static final ExecutorService TASK_POOL = Executors.newCachedThreadPool();
-
-    @NotNull
-    public static Gson getGson() {
-        return GSON.get();
+    public AuthenticationFailedException(Throwable cause) {
+        super(cause);
     }
 }

@@ -22,29 +22,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common;
+package com.github.phantompowered.server4je.authlib.gson;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.io.IOException;
+import java.util.UUID;
 
-public final class CommonConstants {
+public class UniqueIdTypeAdapter extends TypeAdapter<UUID> {
 
-    private CommonConstants() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    private static final String UUID_REGEX = "(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})";
+    private static final String UUID_REPLACEMENT = "$1-$2-$3-$4-$5";
+
+    @Override
+    public void write(JsonWriter jsonWriter, UUID uuid) throws IOException {
+        jsonWriter.value(uuid.toString().replace("-", ""));
     }
 
-    private static final ThreadLocal<Gson> GSON = ThreadLocal
-        .withInitial(() -> new GsonBuilder().disableHtmlEscaping().serializeNulls().setPrettyPrinting().create());
-
-    public static final ExecutorService TASK_POOL = Executors.newCachedThreadPool();
+    @Override
+    public UUID read(JsonReader jsonReader) throws IOException {
+        return UniqueIdTypeAdapter.fromString(jsonReader.nextString());
+    }
 
     @NotNull
-    public static Gson getGson() {
-        return GSON.get();
+    public static UUID fromString(@NotNull String in) {
+        return UUID.fromString(in.replaceFirst(UUID_REGEX, UUID_REPLACEMENT));
     }
 }
