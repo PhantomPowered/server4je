@@ -55,10 +55,7 @@ public class PacketOutSuccess implements Packet {
 
     @Override
     public void writeData(@NotNull @BufferStatus(BufferStatus.Status.EMPTY) DataBuffer dataBuffer) {
-        dataBuffer.writeInt((int) (this.playerUniqueId.getMostSignificantBits() >> 32));
-        dataBuffer.writeInt((int) this.playerUniqueId.getMostSignificantBits());
-        dataBuffer.writeInt((int) (this.playerUniqueId.getLeastSignificantBits() >> 32));
-        dataBuffer.writeInt((int) this.playerUniqueId.getLeastSignificantBits());
+        dataBuffer.writeModernUniqueId(this.playerUniqueId);
         dataBuffer.writeString(this.userName, 16);
     }
 

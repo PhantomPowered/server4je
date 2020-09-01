@@ -111,6 +111,11 @@ public abstract class DataBuffer extends ByteBuf {
 
     public abstract void writeUniqueId(@NotNull UUID uniqueId);
 
+    @NotNull
+    public abstract UUID readModernUniqueId();
+
+    public abstract void writeModernUniqueId(@NotNull UUID uniqueId);
+
     @Override
     public int capacity() {
         return this.dataHolder.capacity();
