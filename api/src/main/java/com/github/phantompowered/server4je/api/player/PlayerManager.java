@@ -22,17 +22,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je;
+package com.github.phantompowered.server4je.api.player;
 
-import com.github.phantompowered.server4je.console.DefaultServerConsole;
-import com.github.phantompowered.server4je.logging.ServerLogger;
+import org.jetbrains.annotations.NotNull;
 
-public final class ServerLauncher {
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-    public static synchronized void main(String[] args) {
-        DefaultServerConsole console = new DefaultServerConsole();
-        ServerLogger serverLogger = new ServerLogger(console.getLineReader());
+public interface PlayerManager {
 
+    @NotNull
+    Optional<PhantomPlayer> getPlayerByName(@NotNull String name);
 
-    }
+    @NotNull
+    Optional<PhantomPlayer> getPlayerByNameExact(@NotNull String name);
+
+    @NotNull
+    Optional<PhantomPlayer> getPlayerByUniqueId(@NotNull UUID uniqueId);
+
+    @NotNull
+    List<PhantomPlayer> getMatchingPlayers(@NotNull String pattern);
+
+    @NotNull
+    List<PhantomPlayer> getOnlinePlayers();
 }

@@ -22,17 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je;
+package com.github.phantompowered.server4je.gson;
 
-import com.github.phantompowered.server4je.console.DefaultServerConsole;
-import com.github.phantompowered.server4je.logging.ServerLogger;
+import com.github.phantompowered.server4je.common.CommonConstants;
+import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
+import com.github.phantompowered.server4je.common.exception.ReportedException;
+import org.jetbrains.annotations.NotNull;
 
-public final class ServerLauncher {
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
-    public static synchronized void main(String[] args) {
-        DefaultServerConsole console = new DefaultServerConsole();
-        ServerLogger serverLogger = new ServerLogger(console.getLineReader());
+public final class JsonDataLoader {
 
+    private JsonDataLoader() {
+        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    }
 
+    @NotNull
+    public static <T> T loadFromStream(@NotNull InputStream stream, @NotNull Class<T> type) {
+        try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+            return CommonConstants.getGson().fromJson(reader, type);
+        } catch (IOException exception) {
+            throw ReportedException.forThrowable(exception);
+        }
     }
 }

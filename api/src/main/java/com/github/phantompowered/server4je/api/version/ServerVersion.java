@@ -22,17 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je;
+package com.github.phantompowered.server4je.api.version;
 
-import com.github.phantompowered.server4je.console.DefaultServerConsole;
-import com.github.phantompowered.server4je.logging.ServerLogger;
+import org.jetbrains.annotations.NotNull;
 
-public final class ServerLauncher {
+public interface ServerVersion {
 
-    public static synchronized void main(String[] args) {
-        DefaultServerConsole console = new DefaultServerConsole();
-        ServerLogger serverLogger = new ServerLogger(console.getLineReader());
+    @NotNull
+    String getId();
 
+    @NotNull
+    String getName();
 
-    }
+    @NotNull
+    String getReleaseTarget();
+
+    @NotNull
+    String getBuildTime();
+
+    int getWorldVersion();
+
+    int getProtocolVersion();
+
+    int getPackVersion();
+
+    boolean isStable();
 }

@@ -22,17 +22,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je;
+package com.github.phantompowered.server4je.api.network;
 
-import com.github.phantompowered.server4je.console.DefaultServerConsole;
-import com.github.phantompowered.server4je.logging.ServerLogger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
-public final class ServerLauncher {
+import java.util.Collection;
+import java.util.function.Predicate;
 
-    public static synchronized void main(String[] args) {
-        DefaultServerConsole console = new DefaultServerConsole();
-        ServerLogger serverLogger = new ServerLogger(console.getLineReader());
+public interface NetworkManager {
 
+    @NotNull
+    @UnmodifiableView
+    Collection<NetworkListener> getNetworkListeners();
 
-    }
+    boolean addNetworkListener(@NotNull NetworkListener networkListener);
+
+    boolean closeNetworkListener(@NotNull NetworkListener networkListener);
+
+    boolean closeNetworkListeners(@NotNull Predicate<NetworkListener> listenerFilter);
+
+    void closeAllNetworkListeners();
 }

@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Pattern;
 
-/* package */ enum ConsoleColour {
+public enum ConsoleColour {
 
     BLACK('0', Ansi.ansi().reset().fg(Ansi.Color.BLACK).boldOff().toString()),
     DARK_BLUE('1', Ansi.ansi().reset().fg(Ansi.Color.BLUE).boldOff().toString()),

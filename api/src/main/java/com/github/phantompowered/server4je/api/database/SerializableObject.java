@@ -22,17 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je;
+package com.github.phantompowered.server4je.api.database;
 
-import com.github.phantompowered.server4je.console.DefaultServerConsole;
-import com.github.phantompowered.server4je.logging.ServerLogger;
+import org.jetbrains.annotations.NotNull;
 
-public final class ServerLauncher {
+import java.io.Serializable;
 
-    public static synchronized void main(String[] args) {
-        DefaultServerConsole console = new DefaultServerConsole();
-        ServerLogger serverLogger = new ServerLogger(console.getLineReader());
+public interface SerializableObject extends Serializable {
 
+    void deserialize(@NotNull byte[] bytes);
 
-    }
+    @NotNull
+    byte[] serialize();
 }
