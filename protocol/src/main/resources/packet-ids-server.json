@@ -17,6 +17,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCustomSoundEffect": 24,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutKeepAlive": 31,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenSignEditor": 46,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutCraftRecipeResponse": 47,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAbilities": 48,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPlayerPosition": 52,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityDestroy": 54,
