@@ -13,6 +13,7 @@
     "com.github.phantompowered.server4je.protocol.status.out.PacketOutPong": 1
   },
   "PLAY": {
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityAnimation": 5,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCustomSoundEffect": 24,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutKeepAlive": 31,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenSignEditor": 46,

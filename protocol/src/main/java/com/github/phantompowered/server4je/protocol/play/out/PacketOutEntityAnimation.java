@@ -30,28 +30,25 @@ import com.github.phantompowered.server4je.protocol.defaults.PrimitivePacket;
 import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyToClientException;
 import com.github.phantompowered.server4je.protocol.id.PacketIdUtil;
 import com.github.phantompowered.server4je.protocol.state.ProtocolState;
+import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-public class PacketOutAbilities extends PrimitivePacket {
+public class PacketOutEntityAnimation extends PrimitivePacket {
 
-    private boolean invulnerable;
-    private boolean flying;
-    private boolean allowFlying;
-    private boolean creative;
-    private float flyingSpeed;
-    private float viewModifier;
+    private int entityId;
+    private int animation;
 
-    public PacketOutAbilities() {
+    public PacketOutEntityAnimation() {
     }
 
-    public PacketOutAbilities(boolean invulnerable, boolean flying, boolean allowFlying, boolean creative, float flyingSpeed, float viewModifier) {
-        this.invulnerable = invulnerable;
-        this.flying = flying;
-        this.allowFlying = allowFlying;
-        this.creative = creative;
-        this.flyingSpeed = flyingSpeed;
-        this.viewModifier = viewModifier;
+    public PacketOutEntityAnimation(@NotNull Entity entity, int animation) {
+        this(entity.getEntityId(), animation);
+    }
+
+    public PacketOutEntityAnimation(int entityId, int animation) {
+        this.entityId = entityId;
+        this.animation = animation;
     }
 
     @Override
@@ -61,78 +58,28 @@ public class PacketOutAbilities extends PrimitivePacket {
 
     @Override
     public void writeData(@NotNull @BufferStatus(BufferStatus.Status.EMPTY) DataBuffer dataBuffer) {
-        byte flags = 0;
-        if (this.invulnerable) {
-            flags = (byte) (flags | 1);
-        }
-
-        if (this.flying) {
-            flags = (byte) (flags | 2);
-        }
-
-        if (this.allowFlying) {
-            flags = (byte) (flags | 4);
-        }
-
-        if (this.creative) {
-            flags = (byte) (flags | 8);
-        }
-
-        dataBuffer.writeByte(flags);
-        dataBuffer.writeFloat(this.flyingSpeed);
-        dataBuffer.writeFloat(this.viewModifier);
+        dataBuffer.writeVarInt(this.entityId);
+        dataBuffer.writeByte(this.animation);
     }
 
     @Override
     public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
-        return PacketIdUtil.getServerPacketId(ProtocolState.PLAY, PacketOutAbilities.class);
+        return PacketIdUtil.getServerPacketId(ProtocolState.PLAY, PacketOutEntityAnimation.class);
     }
 
-    public boolean isInvulnerable() {
-        return this.invulnerable;
+    public int getEntityId() {
+        return this.entityId;
     }
 
-    public void setInvulnerable(boolean invulnerable) {
-        this.invulnerable = invulnerable;
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
     }
 
-    public boolean isFlying() {
-        return this.flying;
+    public int getAnimation() {
+        return this.animation;
     }
 
-    public void setFlying(boolean flying) {
-        this.flying = flying;
-    }
-
-    public boolean isAllowFlying() {
-        return this.allowFlying;
-    }
-
-    public void setAllowFlying(boolean allowFlying) {
-        this.allowFlying = allowFlying;
-    }
-
-    public boolean isCreative() {
-        return this.creative;
-    }
-
-    public void setCreative(boolean creative) {
-        this.creative = creative;
-    }
-
-    public float getFlyingSpeed() {
-        return this.flyingSpeed;
-    }
-
-    public void setFlyingSpeed(float flyingSpeed) {
-        this.flyingSpeed = flyingSpeed;
-    }
-
-    public float getViewModifier() {
-        return this.viewModifier;
-    }
-
-    public void setViewModifier(float viewModifier) {
-        this.viewModifier = viewModifier;
+    public void setAnimation(int animation) {
+        this.animation = animation;
     }
 }
