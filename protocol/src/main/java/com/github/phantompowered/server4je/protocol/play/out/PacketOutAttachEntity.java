@@ -22,5 +22,67 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.protocol.play.out;public class PacketOutAttachEntity {
+package com.github.phantompowered.server4je.protocol.play.out;
+
+import com.github.phantompowered.server4je.common.annotation.Note;
+import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
+import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
+import com.github.phantompowered.server4je.protocol.defaults.PrimitivePacket;
+import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyToClientException;
+import com.github.phantompowered.server4je.protocol.id.PacketIdUtil;
+import com.github.phantompowered.server4je.protocol.state.ProtocolState;
+import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
+
+public class PacketOutAttachEntity extends PrimitivePacket {
+
+    private int attachedEntity;
+    @Note("0 means detach")
+    private int holdingEntity;
+
+    public PacketOutAttachEntity() {
+    }
+
+    public PacketOutAttachEntity(@NotNull Entity attachedEntity, @Nullable Entity holdingEntity) {
+        this(attachedEntity.getEntityId(), holdingEntity == null ? 0 : holdingEntity.getEntityId());
+    }
+
+    public PacketOutAttachEntity(int attachedEntity, @Note("0 means detach") int holdingEntity) {
+        this.attachedEntity = attachedEntity;
+        this.holdingEntity = holdingEntity;
+    }
+
+    @Override
+    public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
+        PacketOnlyToClientException.throwNow();
+    }
+
+    @Override
+    public void writeData(@NotNull @BufferStatus(BufferStatus.Status.EMPTY) DataBuffer dataBuffer) {
+        dataBuffer.writeInt(this.attachedEntity);
+        dataBuffer.writeInt(this.holdingEntity);
+    }
+
+    @Override
+    public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
+        return PacketIdUtil.getServerPacketId(ProtocolState.PLAY, PacketOutAttachEntity.class);
+    }
+
+    public int getAttachedEntity() {
+        return this.attachedEntity;
+    }
+
+    public void setAttachedEntity(int attachedEntity) {
+        this.attachedEntity = attachedEntity;
+    }
+
+    public int getHoldingEntity() {
+        return this.holdingEntity;
+    }
+
+    public void setHoldingEntity(int holdingEntity) {
+        this.holdingEntity = holdingEntity;
+    }
 }
