@@ -81,6 +81,16 @@ public abstract class DataBuffer extends ByteBuf {
     @NotNull
     public abstract byte[] readByteArray(@Range(from = 0, to = Integer.MAX_VALUE) int limit);
 
+    public abstract void writeStringArray(@NotNull String[] strings);
+
+    public abstract void writeStringArray(@NotNull String[] strings, short limit);
+
+    @NotNull
+    public abstract String[] readStringArray();
+
+    @NotNull
+    public abstract String[] readStringArray(@Range(from = 0, to = Integer.MAX_VALUE) int limit);
+
     public abstract void writeVarIntArray(@NotNull int[] ints);
 
     public abstract int[] readVarIntArray();
