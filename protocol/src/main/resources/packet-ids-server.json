@@ -17,6 +17,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAcknowledgePlayerDigging": 7,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutBlockBreakAnimation": 8,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutBlockAction": 10,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutBlockChange": 11,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCustomSoundEffect": 24,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutKeepAlive": 31,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenSignEditor": 46,
