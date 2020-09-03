@@ -91,6 +91,38 @@ public class PacketOutAdvancements implements Packet {
         return PacketIdUtil.getServerPacketId(ProtocolState.PLAY, PacketOutAdvancements.class);
     }
 
+    public boolean isResetAdvancements() {
+        return this.resetAdvancements;
+    }
+
+    public void setResetAdvancements(boolean resetAdvancements) {
+        this.resetAdvancements = resetAdvancements;
+    }
+
+    public AdvancementMapping[] getAdvancements() {
+        return this.advancements;
+    }
+
+    public void setAdvancements(AdvancementMapping[] advancements) {
+        this.advancements = advancements;
+    }
+
+    public Namespaced[] getAdvancementsForRemoval() {
+        return this.advancementsForRemoval;
+    }
+
+    public void setAdvancementsForRemoval(Namespaced[] advancementsForRemoval) {
+        this.advancementsForRemoval = advancementsForRemoval;
+    }
+
+    public ProgressMapping[] getProgressMappings() {
+        return this.progressMappings;
+    }
+
+    public void setProgressMappings(ProgressMapping[] progressMappings) {
+        this.progressMappings = progressMappings;
+    }
+
     public static class AdvancementMapping {
 
         private String key;
