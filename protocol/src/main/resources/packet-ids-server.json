@@ -38,6 +38,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutRemoveEntityEffect": 55,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCamera": 62,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAttachEntity": 69,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityEquipment": 71,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateHealth": 73,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutTimeUpdate": 78,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutNamedSoundEffect": 81,
