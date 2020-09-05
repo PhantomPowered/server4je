@@ -26,6 +26,11 @@
             <id>minecraft</id>
             <url>https://libraries.minecraft.net</url>
         </repository>
+
+        <repository>
+            <id>sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -53,6 +58,13 @@
             <groupId>com.mojang</groupId>
             <artifactId>brigadier</artifactId>
             <version>1.0.17</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>nbt</artifactId>
+            <version>1.12-1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
