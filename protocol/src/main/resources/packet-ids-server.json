@@ -31,6 +31,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutKeepAlive": 31,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateLight": 35,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutJoinGame": 36,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutMapData": 37,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityPosition": 39,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityPositionRotation": 40,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityRotation": 41,
