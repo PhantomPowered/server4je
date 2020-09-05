@@ -24,6 +24,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCloseWindow": 18,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPluginMessage": 23,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCustomSoundEffect": 24,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutDisconnect": 25,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityStatus": 26,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutExplosion": 27,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutGameStateChange": 29,
