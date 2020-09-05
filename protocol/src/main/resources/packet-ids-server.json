@@ -24,6 +24,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCloseWindow": 18,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPluginMessage": 23,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCustomSoundEffect": 24,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityStatus": 89,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutKeepAlive": 31,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityPosition": 39,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityPositionRotation": 40,
