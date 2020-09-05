@@ -41,6 +41,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutRemoveEntityEffect": 55,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityHeadLook": 58,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCamera": 62,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutHeldItemChange": 63,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityMetadata": 68,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAttachEntity": 69,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityVelocity": 70,

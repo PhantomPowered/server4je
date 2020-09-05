@@ -27,6 +27,7 @@ package com.github.phantompowered.server4je.protocol.play.out;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
 import com.github.phantompowered.server4je.protocol.defaults.PrimitivePacket;
+import com.github.phantompowered.server4je.protocol.exceptions.PacketOnlyToClientException;
 import com.github.phantompowered.server4je.protocol.id.PacketIdUtil;
 import com.github.phantompowered.server4je.protocol.state.ProtocolState;
 import it.unimi.dsi.fastutil.floats.Float2ObjectMap;
@@ -82,7 +83,7 @@ public class PacketOutGameStateChange extends PrimitivePacket {
 
     @Override
     public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
-
+        PacketOnlyToClientException.throwNow();
     }
 
     @Override
