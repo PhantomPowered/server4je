@@ -55,4 +55,13 @@ public final class LocationUtil {
         int z = (int) (hash << 64 - NUM_Z_BITS >> 64 - NUM_Z_BITS);
         return new Location(null, x, y, z);
     }
+
+    /* Magic */
+    public static long writeLocationAsPosition(@NotNull Location location) {
+        long result = 0L;
+        result |= (location.getBlockX() & 4_194_303L) << 42;
+        result |= location.getBlockZ() & 1_048_575L;
+        result |= (location.getBlockX() & 4_194_303L) << 20;
+        return result;
+    }
 }
