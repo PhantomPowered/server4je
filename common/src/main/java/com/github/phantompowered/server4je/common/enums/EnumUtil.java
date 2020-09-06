@@ -42,7 +42,7 @@ public final class EnumUtil {
     private static final IllegalStateException BASE_NULL = new IllegalStateException("Entry base evaluated null instead of enum set");
 
     /**
-     * Tries to find an enum field by the given name, using a weak cache
+     * Tries to find an enum field by the given name, using a weak cache.
      *
      * @param enumClass The class to find the constant in
      * @param field     The name of the field to find
@@ -61,7 +61,7 @@ public final class EnumUtil {
     }
 
     /**
-     * Tries to find an enum field by the given ordinal index
+     * Tries to find an enum field by the given ordinal index.
      *
      * @param enumClass The class to find the constant in
      * @param ordinal   The ordinal field of the enum constant
@@ -80,7 +80,7 @@ public final class EnumUtil {
     }
 
     /**
-     * Gets all values of an enum class using a weak cache
+     * Gets all values of an enum class using a weak cache.
      *
      * @param enumClass The class to get all values of
      * @param <T>       The Type of the enum class
