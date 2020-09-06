@@ -38,6 +38,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityRotation": 41,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityMovement": 42,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenBook": 44,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenWindow": 45,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenSignEditor": 46,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCraftRecipeResponse": 47,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAbilities": 48,
