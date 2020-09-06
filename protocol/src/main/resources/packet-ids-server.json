@@ -45,6 +45,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCraftRecipeResponse": 47,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAbilities": 48,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCombatEvent": 49,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutPlayerInfo": 50,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutFacePlayer": 51,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPlayerPosition": 52,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityDestroy": 54,
