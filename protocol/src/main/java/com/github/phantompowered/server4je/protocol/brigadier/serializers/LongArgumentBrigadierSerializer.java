@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.protocol.brigadier.serializers;
+/*package com.github.phantompowered.server4je.protocol.brigadier.serializers;
 
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.brigadier.BrigadierSerializer;
@@ -59,4 +59,4 @@ public final class LongArgumentBrigadierSerializer implements BrigadierSerialize
         long max = (flags & 2) != 0 ? dataBuffer.readLong() : Long.MAX_VALUE;
         return LongArgumentType.longArg(min, max);
     }
-}
+}*/

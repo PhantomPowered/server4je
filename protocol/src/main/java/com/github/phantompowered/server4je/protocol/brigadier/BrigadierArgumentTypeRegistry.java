@@ -79,7 +79,8 @@ public final class BrigadierArgumentTypeRegistry {
         register("brigadier:double", DoubleArgumentType.class, DoubleArgumentBrigadierSerializer.INSTANCE);
         register("brigadier:float", FloatArgumentType.class, FloatArgumentBrigadierSerializer.INSTANCE);
         register("brigadier:integer", IntegerArgumentType.class, IntegerArgumentBrigadierSerializer.INSTANCE);
-        register("brigadier:long", LongArgumentType.class, LongArgumentBrigadierSerializer.INSTANCE);
+        register("brigadier:long", IntegerArgumentType.class, IntegerArgumentBrigadierSerializer.INSTANCE);
+        //register("brigadier:long", LongArgumentType.class, LongArgumentBrigadierSerializer.INSTANCE);
         register("brigadier:string", StringArgumentType.class, StringArgumentBrigadierSerializer.INSTANCE);
 
         withoutType("minecraft:entity", ByteBrigadierSerializer.INSTANCE);
