@@ -48,6 +48,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPlayerInfo": 50,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutFacePlayer": 51,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPlayerPosition": 52,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutDeclareRecipes": 53,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityDestroy": 54,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutRemoveEntityEffect": 55,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityHeadLook": 58,
