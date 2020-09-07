@@ -126,7 +126,7 @@ public class PacketOutScoreboardTeam implements Packet {
         void serialize(@NotNull DataBuffer dataBuffer);
     }
 
-    protected static abstract class BaseCreateUpdateTeamData<T extends BaseCreateUpdateTeamData<T>> implements ScoreboardTeamData {
+    protected abstract static class BaseCreateUpdateTeamData<T extends BaseCreateUpdateTeamData<T>> implements ScoreboardTeamData {
 
         protected BaseComponent[] displayName;
         protected byte flags;
