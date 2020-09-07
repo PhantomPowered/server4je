@@ -24,6 +24,7 @@
  */
 package com.github.phantompowered.server4je.protocol.play.out;
 
+import com.github.phantompowered.server4je.common.CommonConstants;
 import com.github.phantompowered.server4je.common.exception.ReportedException;
 import com.github.phantompowered.server4je.protocol.Packet;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
@@ -85,7 +86,7 @@ public class PacketOutScoreboardTeam implements Packet {
 
     @Override
     public void writeData(@NotNull @BufferStatus(BufferStatus.Status.EMPTY) DataBuffer dataBuffer) {
-        dataBuffer.writeString(this.teamName, 16);
+        dataBuffer.writeString(this.teamName == null ? CommonConstants.EMPTY_STRING : this.teamName, 16);
         dataBuffer.writeByte(this.teamData.getAction().ordinal());
         this.teamData.serialize(dataBuffer);
     }
