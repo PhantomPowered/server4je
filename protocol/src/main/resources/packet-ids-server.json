@@ -66,6 +66,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateHealth": 73,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutScoreboardObjective": 74,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutSetPassengers": 75,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateScore": 77,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutTimeUpdate": 78,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntitySoundEffect": 80,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutNamedSoundEffect": 81,

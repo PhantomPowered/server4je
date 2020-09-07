@@ -43,6 +43,8 @@ public final class CommonConstants {
 
     public static final ExecutorService TASK_POOL = Executors.newCachedThreadPool();
 
+    public static final String EMPTY_STRING = "";
+
     @NotNull
     public static Gson getGson() {
         return GSON.get();
