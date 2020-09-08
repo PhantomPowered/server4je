@@ -24,6 +24,7 @@
  */
 package com.github.phantompowered.server4je.protocol.play.out;
 
+import com.github.phantompowered.server4je.api.brigadier.ComponentMessage;
 import com.github.phantompowered.server4je.protocol.Packet;
 import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
 import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
@@ -66,7 +67,11 @@ public class PacketOutTabComplete implements Packet {
             dataBuffer.writeString(suggestion.getText());
             dataBuffer.writeBoolean(suggestion.getTooltip() != null);
             if (suggestion.getTooltip() != null) {
-                dataBuffer.writeString(ComponentSerializer.toString(TextComponent.fromLegacyText(suggestion.getTooltip().getString())));
+                dataBuffer.writeString(
+                    suggestion.getTooltip() instanceof ComponentMessage
+                        ? ((ComponentMessage) suggestion.getTooltip()).formatAsComponent()
+                        : ComponentSerializer.toString(TextComponent.fromLegacyText(suggestion.getTooltip().getString()))
+                );
             }
         }
     }
