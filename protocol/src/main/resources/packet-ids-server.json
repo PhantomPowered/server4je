@@ -22,6 +22,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutStatistics": 6,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAcknowledgePlayerDigging": 7,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutBlockBreakAnimation": 8,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutBlockEntityData": 9,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutBlockAction": 10,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutBlockChange": 11,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutBossBar": 12,
