@@ -39,6 +39,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutDisconnect": 25,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityStatus": 26,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutExplosion": 27,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutUnloadChunk": 28,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutGameStateChange": 29,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenHorseWindow": 30,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutKeepAlive": 31,
