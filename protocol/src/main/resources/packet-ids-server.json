@@ -15,6 +15,7 @@
   "PLAY": {
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutSpawnEntity": 0,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutSpawnExperienceOrb": 1,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutSpawnLivingEntity": 2,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutSpawnPlayer": 4,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityAnimation": 5,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAcknowledgePlayerDigging": 7,
