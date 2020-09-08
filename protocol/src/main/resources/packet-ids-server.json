@@ -24,6 +24,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutChat": 14,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutDeclareCommands": 16,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCloseWindow": 18,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutSetCoolDown": 22,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPluginMessage": 23,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCustomSoundEffect": 24,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutDisconnect": 25,
