@@ -45,6 +45,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutGameStateChange": 29,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenHorseWindow": 30,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutKeepAlive": 31,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutEffect": 33,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateLight": 35,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutJoinGame": 36,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutMapData": 37,
