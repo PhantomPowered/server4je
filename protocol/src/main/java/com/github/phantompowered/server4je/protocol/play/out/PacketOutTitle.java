@@ -43,13 +43,16 @@ public class PacketOutTitle implements Packet {
     public static final PacketOutTitle RESET_TITLE = new PacketOutTitle(Action.RESET);
 
     // unmodifiable
-    private final Action action;
+    private Action action;
     // only sub title, title, action bar
     private BaseComponent[] text;
     // only times
     private int fadeIn;
     private int stay;
     private int fadeOut;
+
+    public PacketOutTitle() {
+    }
 
     private PacketOutTitle(Action action) {
         this.action = action;
