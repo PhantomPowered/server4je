@@ -92,6 +92,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCollectItem": 85,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityTeleport": 86,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutAdvancements": 87,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityProperties": 88,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityEffect": 89,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutDeclareRecipes": 90,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutTags": 91
