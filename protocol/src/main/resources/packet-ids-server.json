@@ -71,6 +71,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityHeadLook": 58,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutMultiBlockChange": 59,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutSelectAdvancementTab": 60,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutWorldBorder": 61,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCamera": 62,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutHeldItemChange": 63,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutUpdateViewPosition": 64,
