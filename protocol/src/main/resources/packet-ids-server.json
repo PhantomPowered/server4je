@@ -51,6 +51,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityPositionRotation": 40,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityRotation": 41,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutEntityMovement": 42,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutVehicleMove": 43,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenBook": 44,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenWindow": 45,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutOpenSignEditor": 46,
