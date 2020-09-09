@@ -32,6 +32,7 @@
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutDeclareCommands": 16,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutWindowConfirmation": 17,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutCloseWindow": 18,
+    "com.github.phantompowered.server4je.protocol.play.out.PacketOutWindowProperty": 20,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutSetSlot": 21,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutSetCoolDown": 22,
     "com.github.phantompowered.server4je.protocol.play.out.PacketOutPluginMessage": 23,
