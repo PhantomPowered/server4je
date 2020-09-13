@@ -31,6 +31,7 @@ import com.github.phantompowered.server4je.api.version.ServerVersion;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,6 +46,7 @@ public abstract class PhantomServer implements Server {
 
     public static void setTheServer(@NotNull PhantomServer theServer) {
         PhantomServer.theServer = Preconditions.checkNotNull(theServer, "Server instance has to be non-null");
+        Bukkit.setServer(theServer);
     }
 
     // ===
@@ -65,6 +67,9 @@ public abstract class PhantomServer implements Server {
 
     @NotNull
     public abstract OfflinePlayerManager getOfflinePlayerManager();
+
+    @NotNull
+    public abstract String getPrompt();
 
     @Override
     @Deprecated

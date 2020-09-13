@@ -39,22 +39,22 @@
 
         <dependency>
             <groupId>org.jline</groupId>
-            <artifactId>jline-terminal</artifactId>
+            <artifactId>jline-terminal-jansi</artifactId>
             <version>3.16.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.jline</groupId>
-            <artifactId>jline-reader</artifactId>
-            <version>3.16.0</version>
+            <groupId>net.minecrell</groupId>
+            <artifactId>terminalconsoleappender</artifactId>
+            <version>1.2.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.fusesource.jansi</groupId>
-            <artifactId>jansi</artifactId>
-            <version>1.18</version>
+            <groupId>net.sf.jopt-simple</groupId>
+            <artifactId>jopt-simple</artifactId>
+            <version>5.0.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -83,6 +83,13 @@
             <groupId>net.openhft</groupId>
             <artifactId>chronicle-map</artifactId>
             <version>3.20.3</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.13.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

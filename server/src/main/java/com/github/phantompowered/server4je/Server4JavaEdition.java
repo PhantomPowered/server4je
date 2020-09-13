@@ -33,11 +33,14 @@ import com.github.phantompowered.server4je.api.player.PlayerManager;
 import com.github.phantompowered.server4je.api.version.ServerVersion;
 import com.github.phantompowered.server4je.common.exception.ReportedException;
 import com.github.phantompowered.server4je.gson.JsonDataLoader;
+import com.github.phantompowered.server4je.options.ServerCliOptionUtil;
 import com.github.phantompowered.server4je.version.PhantomServerVersion;
+import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import io.netty.util.concurrent.FastThreadLocalThread;
+import joptsimple.OptionSet;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
@@ -74,10 +77,12 @@ import java.util.logging.Logger;
 
 public class Server4JavaEdition extends PhantomServer {
 
+    private final OptionSet options;
     private final ServerVersion serverVersion;
     private final ListeningScheduledExecutorService executorService;
 
-    public Server4JavaEdition() {
+    public Server4JavaEdition(@NotNull OptionSet options) {
+        this.options = options;
         this.executorService = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(4, new ThreadFactory() {
             private final AtomicLong threadCount = new AtomicLong();
 
@@ -134,6 +139,11 @@ public class Server4JavaEdition extends PhantomServer {
     public @NotNull
     OfflinePlayerManager getOfflinePlayerManager() {
         return null;
+    }
+
+    @Override
+    public @NotNull String getPrompt() {
+        return ServerCliOptionUtil.getOption(this.options, "prompt", Functions.identity(), "> ").orElseThrow();
     }
 
     @Override
