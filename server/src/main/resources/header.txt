@@ -1,0 +1,9 @@
+   _____                           __ __      ________
+  / ___/___  ______   _____  _____/ // /     / / ____/
+  \__ \/ _ \/ ___/ | / / _ \/ ___/ // /___  / / __/
+ ___/ /  __/ /   | |/ /  __/ /  /__  __/ /_/ / /___
+/____/\___/_/    |___/\___/_/     /_/  \____/_____/
+
+Copyright (c) 2020 derklaro, derrop & PhantomPowered
+GitHub: https://github.com/PhantomPowered/server4je
+Support Discord: https://discord.gg/KN8rDZJ

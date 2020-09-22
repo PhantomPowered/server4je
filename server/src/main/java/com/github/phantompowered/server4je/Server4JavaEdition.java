@@ -27,13 +27,21 @@ package com.github.phantompowered.server4je;
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.github.phantompowered.server4je.api.PhantomServer;
+import com.github.phantompowered.server4je.api.audience.Audience;
+import com.github.phantompowered.server4je.api.config.ServerConfig;
+import com.github.phantompowered.server4je.api.event.ServerInitDoneEvent;
 import com.github.phantompowered.server4je.api.network.NetworkManager;
 import com.github.phantompowered.server4je.api.player.OfflinePlayerManager;
 import com.github.phantompowered.server4je.api.player.PlayerManager;
 import com.github.phantompowered.server4je.api.version.ServerVersion;
+import com.github.phantompowered.server4je.command.ServerCommandMap;
 import com.github.phantompowered.server4je.common.exception.ReportedException;
 import com.github.phantompowered.server4je.gson.JsonDataLoader;
 import com.github.phantompowered.server4je.options.ServerCliOptionUtil;
+import com.github.phantompowered.server4je.scheduler.ServerScheduler;
+import com.github.phantompowered.server4je.service.ServerServicesManager;
+import com.github.phantompowered.server4je.tick.ServerTicker;
+import com.github.phantompowered.server4je.unsafe.ServerUnsafeValues;
 import com.github.phantompowered.server4je.version.PhantomServerVersion;
 import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
@@ -71,22 +79,32 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 public class Server4JavaEdition extends PhantomServer {
+
+    private final CommandMap commandMap = new ServerCommandMap();
+    private final BukkitScheduler bukkitScheduler = new ServerScheduler();
+    private final ServicesManager servicesManager = new ServerServicesManager();
+    private final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Server4JavaEdition.class.getSimpleName());
+    private final AtomicBoolean running = new AtomicBoolean(true);
+    private final Spigot spigot = new ServerSpigot();
 
     private final OptionSet options;
     private final ServerVersion serverVersion;
     private final ListeningScheduledExecutorService executorService;
 
-    public Server4JavaEdition(@NotNull OptionSet options) {
+    public Server4JavaEdition(OptionSet options) {
         this.options = options;
         this.executorService = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(4, new ThreadFactory() {
             private final AtomicLong threadCount = new AtomicLong();
 
             @Override
+            @NotNull
             public Thread newThread(@NotNull Runnable r) {
                 return new FastThreadLocalThread(r, "Server4JE Executor Thread #" + this.threadCount.getAndIncrement());
             }
@@ -103,77 +121,85 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     protected void bootstrap() {
-
+        Bukkit.getPluginManager().callEvent(new ServerInitDoneEvent(this));
+        ServerTicker.start();
     }
 
     @Override
-    public @NotNull
-    ListeningScheduledExecutorService getExecutor() {
+    @NotNull
+    public ListeningScheduledExecutorService getExecutor() {
         return this.executorService;
     }
 
     @Override
-    public @NotNull
-    ServerVersion getServerVersion() {
+    @NotNull
+    public ServerVersion getServerVersion() {
         return this.serverVersion;
     }
 
     @Override
-    public @NotNull
-    NetworkManager getNetworkManager() {
+    @NotNull
+    public NetworkManager getNetworkManager() {
         return null;
     }
 
     @Override
-    public void broadcast(@NotNull BaseComponent[] message, @NotNull String permission) {
-
+    public void broadcast(BaseComponent[] message, @NotNull String permission) {
+        PhantomServer.getInstance().filter(player -> player.hasPermission(permission)).forEach(player -> player.sendMessage(message));
     }
 
     @Override
-    public @NotNull
-    PlayerManager getPlayerManager() {
+    @NotNull
+    public PlayerManager getPlayerManager() {
         return null;
     }
 
     @Override
-    public @NotNull
-    OfflinePlayerManager getOfflinePlayerManager() {
+    @NotNull
+    public OfflinePlayerManager getOfflinePlayerManager() {
         return null;
     }
 
     @Override
-    public @NotNull String getPrompt() {
+    @NotNull
+    public String getPrompt() {
         return ServerCliOptionUtil.getOption(this.options, "prompt", Functions.identity(), "> ").orElseThrow();
     }
 
     @Override
     public @NotNull
-    String getName() {
+    ServerConfig getConfig() {
         return null;
     }
 
     @Override
-    public @NotNull
-    String getVersion() {
-        return null;
+    @NotNull
+    public String getName() {
+        return this.getConfig().getServerModName();
     }
 
     @Override
-    public @NotNull
-    String getBukkitVersion() {
-        return null;
+    @NotNull
+    public String getVersion() {
+        return this.serverVersion.getId();
     }
 
     @Override
-    public @NotNull
-    String getMinecraftVersion() {
-        return null;
+    @NotNull
+    public String getBukkitVersion() {
+        return this.serverVersion.getId();
     }
 
     @Override
-    public @NotNull
-    Collection<? extends Player> getOnlinePlayers() {
-        return null;
+    @NotNull
+    public String getMinecraftVersion() {
+        return this.serverVersion.getId();
+    }
+
+    @Override
+    @NotNull
+    public Collection<? extends Player> getOnlinePlayers() {
+        return PhantomServer.getInstance().getTracked();
     }
 
     @Override
@@ -197,14 +223,14 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    String getIp() {
+    @NotNull
+    public String getIp() {
         return null;
     }
 
     @Override
-    public @NotNull
-    String getWorldType() {
+    @NotNull
+    public String getWorldType() {
         return null;
     }
 
@@ -234,8 +260,8 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    Set<OfflinePlayer> getWhitelistedPlayers() {
+    @NotNull
+    public Set<OfflinePlayer> getWhitelistedPlayers() {
         return null;
     }
 
@@ -245,19 +271,19 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public int broadcastMessage(@NotNull String s) {
-        return 0;
+    public int broadcastMessage(@NotNull String message) {
+        return this.getOnlinePlayers().size();
     }
 
     @Override
-    public @NotNull
-    String getUpdateFolder() {
+    @NotNull
+    public String getUpdateFolder() {
         return null;
     }
 
     @Override
-    public @NotNull
-    File getUpdateFolderFile() {
+    @NotNull
+    public File getUpdateFolderFile() {
         return null;
     }
 
@@ -292,62 +318,57 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @Nullable
-    Player getPlayer(@NotNull String s) {
+    public Player getPlayer(@NotNull String s) {
         return null;
     }
 
     @Override
-    public @Nullable
-    Player getPlayerExact(@NotNull String s) {
+    public Player getPlayerExact(@NotNull String s) {
         return null;
     }
 
     @Override
-    public @NotNull
-    List<Player> matchPlayer(@NotNull String s) {
+    @NotNull
+    public List<Player> matchPlayer(@NotNull String s) {
         return null;
     }
 
     @Override
-    public @Nullable
-    Player getPlayer(@NotNull UUID uuid) {
+    public Player getPlayer(@NotNull UUID uuid) {
         return null;
     }
 
     @Override
-    public @Nullable
-    UUID getPlayerUniqueId(@NotNull String s) {
+    public UUID getPlayerUniqueId(@NotNull String s) {
         return null;
     }
 
     @Override
-    public @NotNull
-    PluginManager getPluginManager() {
+    @NotNull
+    public PluginManager getPluginManager() {
         return null;
     }
 
     @Override
-    public @NotNull
-    BukkitScheduler getScheduler() {
+    @NotNull
+    public BukkitScheduler getScheduler() {
+        return this.bukkitScheduler;
+    }
+
+    @Override
+    @NotNull
+    public ServicesManager getServicesManager() {
+        return this.servicesManager;
+    }
+
+    @Override
+    @NotNull
+    public List<World> getWorlds() {
         return null;
     }
 
     @Override
-    public @NotNull
-    ServicesManager getServicesManager() {
-        return null;
-    }
-
-    @Override
-    public @NotNull
-    List<World> getWorlds() {
-        return null;
-    }
-
-    @Override
-    public @Nullable
-    World createWorld(@NotNull WorldCreator worldCreator) {
+    public World createWorld(@NotNull WorldCreator worldCreator) {
         return null;
     }
 
@@ -362,38 +383,35 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @Nullable
-    World getWorld(@NotNull String s) {
+    public World getWorld(@NotNull String s) {
         return null;
     }
 
     @Override
-    public @Nullable
-    World getWorld(@NotNull UUID uuid) {
+    public World getWorld(@NotNull UUID uuid) {
         return null;
     }
 
     @Override
-    public @Nullable
-    MapView getMap(int i) {
+    public MapView getMap(int i) {
         return null;
     }
 
     @Override
-    public @NotNull
-    MapView createMap(@NotNull World world) {
+    @NotNull
+    public MapView createMap(@NotNull World world) {
         return null;
     }
 
     @Override
-    public @NotNull
-    ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType) {
+    @NotNull
+    public ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType) {
         return null;
     }
 
     @Override
-    public @NotNull
-    ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType, int i, boolean b) {
+    @NotNull
+    public ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType, int i, boolean b) {
         return null;
     }
 
@@ -403,14 +421,13 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    Logger getLogger() {
-        return null;
+    @NotNull
+    public Logger getLogger() {
+        return this.logger;
     }
 
     @Override
-    public @Nullable
-    PluginCommand getPluginCommand(@NotNull String s) {
+    public PluginCommand getPluginCommand(@NotNull String s) {
         return null;
     }
 
@@ -430,20 +447,19 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    List<Recipe> getRecipesFor(@NotNull ItemStack itemStack) {
+    @NotNull
+    public List<Recipe> getRecipesFor(@NotNull ItemStack itemStack) {
         return null;
     }
 
     @Override
-    public @Nullable
-    Recipe getRecipe(@NotNull NamespacedKey namespacedKey) {
+    public Recipe getRecipe(@NotNull NamespacedKey namespacedKey) {
         return null;
     }
 
     @Override
-    public @NotNull
-    Iterator<Recipe> recipeIterator() {
+    @NotNull
+    public Iterator<Recipe> recipeIterator() {
         return null;
     }
 
@@ -463,8 +479,8 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    Map<String, String[]> getCommandAliases() {
+    @NotNull
+    public Map<String, String[]> getCommandAliases() {
         return null;
     }
 
@@ -504,20 +520,20 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    OfflinePlayer getOfflinePlayer(@NotNull String s) {
+    @NotNull
+    public OfflinePlayer getOfflinePlayer(@NotNull String s) {
         return null;
     }
 
     @Override
-    public @NotNull
-    OfflinePlayer getOfflinePlayer(@NotNull UUID uuid) {
+    @NotNull
+    public OfflinePlayer getOfflinePlayer(@NotNull UUID uuid) {
         return null;
     }
 
     @Override
-    public @NotNull
-    Set<String> getIPBans() {
+    @NotNull
+    public Set<String> getIPBans() {
         return null;
     }
 
@@ -532,26 +548,26 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    Set<OfflinePlayer> getBannedPlayers() {
+    @NotNull
+    public Set<OfflinePlayer> getBannedPlayers() {
         return null;
     }
 
     @Override
-    public @NotNull
-    BanList getBanList(BanList.Type type) {
+    @NotNull
+    public BanList getBanList(@NotNull BanList.Type type) {
         return null;
     }
 
     @Override
-    public @NotNull
-    Set<OfflinePlayer> getOperators() {
+    @NotNull
+    public Set<OfflinePlayer> getOperators() {
         return null;
     }
 
     @Override
-    public @NotNull
-    GameMode getDefaultGameMode() {
+    @NotNull
+    public GameMode getDefaultGameMode() {
         return null;
     }
 
@@ -561,62 +577,62 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    ConsoleCommandSender getConsoleSender() {
+    @NotNull
+    public ConsoleCommandSender getConsoleSender() {
         return null;
     }
 
     @Override
-    public @NotNull
-    File getWorldContainer() {
+    @NotNull
+    public File getWorldContainer() {
         return null;
     }
 
     @Override
-    public @NotNull
-    OfflinePlayer[] getOfflinePlayers() {
+    @NotNull
+    public OfflinePlayer[] getOfflinePlayers() {
         return new OfflinePlayer[0];
     }
 
     @Override
-    public @NotNull
-    Messenger getMessenger() {
+    @NotNull
+    public Messenger getMessenger() {
         return null;
     }
 
     @Override
-    public @NotNull
-    HelpMap getHelpMap() {
+    @NotNull
+    public HelpMap getHelpMap() {
         return null;
     }
 
     @Override
-    public @NotNull
-    Inventory createInventory(@Nullable InventoryHolder inventoryHolder, @NotNull InventoryType inventoryType) {
+    @NotNull
+    public Inventory createInventory(@Nullable InventoryHolder inventoryHolder, @NotNull InventoryType inventoryType) {
         return null;
     }
 
     @Override
-    public @NotNull
-    Inventory createInventory(@Nullable InventoryHolder inventoryHolder, @NotNull InventoryType inventoryType, @NotNull String s) {
+    @NotNull
+    public Inventory createInventory(@Nullable InventoryHolder inventoryHolder, @NotNull InventoryType inventoryType, @NotNull String s) {
         return null;
     }
 
     @Override
-    public @NotNull
-    Inventory createInventory(@Nullable InventoryHolder inventoryHolder, int i) throws IllegalArgumentException {
+    @NotNull
+    public Inventory createInventory(@Nullable InventoryHolder inventoryHolder, int i) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public @NotNull
-    Inventory createInventory(@Nullable InventoryHolder inventoryHolder, int i, @NotNull String s) throws IllegalArgumentException {
+    @NotNull
+    public Inventory createInventory(@Nullable InventoryHolder inventoryHolder, int i, @NotNull String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public @NotNull
-    Merchant createMerchant(@Nullable String s) {
+    @NotNull
+    public Merchant createMerchant(@Nullable String s) {
         return null;
     }
 
@@ -651,49 +667,48 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    String getMotd() {
+    @NotNull
+    public String getMotd() {
         return null;
     }
 
     @Override
-    public @Nullable
-    String getShutdownMessage() {
+    public String getShutdownMessage() {
         return null;
     }
 
     @Override
+    @NotNull
     public Warning.WarningState getWarningState() {
         return null;
     }
 
     @Override
-    public @NotNull
-    ItemFactory getItemFactory() {
+    @NotNull
+    public ItemFactory getItemFactory() {
         return null;
     }
 
     @Override
-    public @NotNull
-    ScoreboardManager getScoreboardManager() {
+    @NotNull
+    public ScoreboardManager getScoreboardManager() {
         return null;
     }
 
     @Override
-    public @Nullable
-    CachedServerIcon getServerIcon() {
+    public CachedServerIcon getServerIcon() {
         return null;
     }
 
     @Override
-    public @NotNull
-    CachedServerIcon loadServerIcon(@NotNull File file) throws IllegalArgumentException, Exception {
+    @NotNull
+    public CachedServerIcon loadServerIcon(@NotNull File file) throws IllegalArgumentException, Exception {
         return null;
     }
 
     @Override
-    public @NotNull
-    CachedServerIcon loadServerIcon(@NotNull BufferedImage bufferedImage) throws IllegalArgumentException, Exception {
+    @NotNull
+    public CachedServerIcon loadServerIcon(@NotNull BufferedImage bufferedImage) throws IllegalArgumentException, Exception {
         return null;
     }
 
@@ -708,36 +723,37 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
+    @NotNull
     public ChunkGenerator.ChunkData createChunkData(@NotNull World world) {
         return null;
     }
 
     @Override
+    @NotNull
     public ChunkGenerator.ChunkData createVanillaChunkData(@NotNull World world, int i, int i1) {
         return null;
     }
 
     @Override
-    public @NotNull
-    BossBar createBossBar(@Nullable String s, @NotNull BarColor barColor, @NotNull BarStyle barStyle, @NotNull BarFlag... barFlags) {
+    @NotNull
+    public BossBar createBossBar(@Nullable String s, @NotNull BarColor barColor, @NotNull BarStyle barStyle, BarFlag... barFlags) {
         return null;
     }
 
     @Override
-    public @NotNull
-    KeyedBossBar createBossBar(@NotNull NamespacedKey namespacedKey, @Nullable String s, @NotNull BarColor barColor, @NotNull BarStyle barStyle, @NotNull BarFlag... barFlags) {
+    @NotNull
+    public KeyedBossBar createBossBar(@NotNull NamespacedKey namespacedKey, @Nullable String s, @NotNull BarColor barColor, @NotNull BarStyle barStyle, BarFlag... barFlags) {
         return null;
     }
 
     @Override
-    public @NotNull
-    Iterator<KeyedBossBar> getBossBars() {
+    @NotNull
+    public Iterator<KeyedBossBar> getBossBars() {
         return null;
     }
 
     @Override
-    public @Nullable
-    KeyedBossBar getBossBar(@NotNull NamespacedKey namespacedKey) {
+    public KeyedBossBar getBossBar(@NotNull NamespacedKey namespacedKey) {
         return null;
     }
 
@@ -747,20 +763,19 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @Nullable
-    Entity getEntity(@NotNull UUID uuid) {
+    public Entity getEntity(@NotNull UUID uuid) {
         return null;
     }
 
     @Override
-    public @NotNull
-    double[] getTPS() {
+    @NotNull
+    public double[] getTPS() {
         return new double[0];
     }
 
     @Override
-    public @NotNull
-    long[] getTickTimes() {
+    @NotNull
+    public long[] getTickTimes() {
         return new long[0];
     }
 
@@ -770,80 +785,80 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    CommandMap getCommandMap() {
+    @NotNull
+    public CommandMap getCommandMap() {
+        return this.commandMap;
+    }
+
+    @Override
+    public Advancement getAdvancement(@NotNull NamespacedKey namespacedKey) {
         return null;
     }
 
     @Override
-    public @Nullable
-    Advancement getAdvancement(@NotNull NamespacedKey namespacedKey) {
+    @NotNull
+    public Iterator<Advancement> advancementIterator() {
         return null;
     }
 
     @Override
-    public @NotNull
-    Iterator<Advancement> advancementIterator() {
+    @NotNull
+    public BlockData createBlockData(@NotNull Material material) {
         return null;
     }
 
     @Override
-    public @NotNull
-    BlockData createBlockData(@NotNull Material material) {
+    @NotNull
+    public BlockData createBlockData(@NotNull Material material, @Nullable Consumer<BlockData> consumer) {
         return null;
     }
 
     @Override
-    public @NotNull
-    BlockData createBlockData(@NotNull Material material, @Nullable Consumer<BlockData> consumer) {
+    @NotNull
+    public BlockData createBlockData(@NotNull String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public @NotNull
-    BlockData createBlockData(@NotNull String s) throws IllegalArgumentException {
+    @NotNull
+    public BlockData createBlockData(@Nullable Material material, @Nullable String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public @NotNull
-    BlockData createBlockData(@Nullable Material material, @Nullable String s) throws IllegalArgumentException {
-        return null;
-    }
-
-    @Override
+    @NotNull
     public <T extends Keyed> Tag<T> getTag(@NotNull String s, @NotNull NamespacedKey namespacedKey, @NotNull Class<T> aClass) {
         return null;
     }
 
     @Override
-    public @NotNull
-    <T extends Keyed> Iterable<Tag<T>> getTags(@NotNull String s, @NotNull Class<T> aClass) {
+    @NotNull
+    public <T extends Keyed> Iterable<Tag<T>> getTags(@NotNull String s, @NotNull Class<T> aClass) {
         return null;
     }
 
     @Override
-    public @Nullable
-    LootTable getLootTable(@NotNull NamespacedKey namespacedKey) {
+    public LootTable getLootTable(@NotNull NamespacedKey namespacedKey) {
         return null;
     }
 
     @Override
-    public @NotNull
-    List<Entity> selectEntities(@NotNull CommandSender commandSender, @NotNull String s) throws IllegalArgumentException {
+    @NotNull
+    public List<Entity> selectEntities(@NotNull CommandSender commandSender, @NotNull String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public @NotNull
-    UnsafeValues getUnsafe() {
-        return null;
+    @NotNull
+    @Deprecated
+    public UnsafeValues getUnsafe() {
+        return ServerUnsafeValues.INSTANCE;
     }
 
     @Override
-    public @NotNull
-    Spigot spigot() {
-        return null;
+    @NotNull
+    public Spigot spigot() {
+        return this.spigot;
     }
 
     @Override
@@ -862,26 +877,26 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    String getPermissionMessage() {
+    @NotNull
+    public String getPermissionMessage() {
         return null;
     }
 
     @Override
-    public @NotNull
-    PlayerProfile createProfile(@NotNull UUID uuid) {
+    @NotNull
+    public PlayerProfile createProfile(@NotNull UUID uuid) {
         return null;
     }
 
     @Override
-    public @NotNull
-    PlayerProfile createProfile(@NotNull String s) {
+    @NotNull
+    public PlayerProfile createProfile(@NotNull String s) {
         return null;
     }
 
     @Override
-    public @NotNull
-    PlayerProfile createProfile(@Nullable UUID uuid, @Nullable String s) {
+    @NotNull
+    public PlayerProfile createProfile(@Nullable UUID uuid, @Nullable String s) {
         return null;
     }
 
@@ -892,23 +907,70 @@ public class Server4JavaEdition extends PhantomServer {
 
     @Override
     public boolean isStopping() {
-        return false;
+        return !this.running.get();
     }
 
     @Override
-    public @NotNull
-    MobGoals getMobGoals() {
+    @NotNull
+    public MobGoals getMobGoals() {
         return null;
     }
 
     @Override
-    public void sendPluginMessage(@NotNull Plugin plugin, @NotNull String s, @NotNull byte[] bytes) {
+    public void sendPluginMessage(@NotNull Plugin plugin, @NotNull String s, byte[] bytes) {
 
     }
 
     @Override
-    public @NotNull
-    Set<String> getListeningPluginChannels() {
+    @NotNull
+    public Set<String> getListeningPluginChannels() {
         return null;
+    }
+
+    @Override
+    @NotNull
+    public Audience<Player> filter(@NotNull Predicate<Player> filter) {
+        return null;
+    }
+
+    @Override
+    @NotNull
+    public Audience<Player> track(@NotNull Player toTracked) {
+        return null;
+    }
+
+    @Override
+    @NotNull
+    public Audience<Player> untrack(@NotNull Player toUntracked) {
+        return null;
+    }
+
+    @Override
+    @NotNull
+    public Collection<Player> getTracked() {
+        return null;
+    }
+
+    @Override
+    public void forEach(@NotNull Consumer<Player> consumer) {
+
+    }
+
+    private static final class ServerSpigot extends Spigot {
+
+        @Override
+        public void broadcast(@NotNull BaseComponent component) {
+            PhantomServer.getInstance().forEach(player -> player.sendMessage(component));
+        }
+
+        @Override
+        public void broadcast(@NotNull BaseComponent... components) {
+            PhantomServer.getInstance().forEach(player -> player.sendMessage(components));
+        }
+
+        @Override
+        public void restart() {
+            // Silently discard
+        }
     }
 }

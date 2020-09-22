@@ -22,38 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.command;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.command.Command;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
+final class CommandContainer {
 
-public final class Iterables {
+    private final Command command;
+    private final String label;
+    private final String fallbackPrefix;
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    protected CommandContainer(Command command, String label, String fallbackPrefix) {
+        this.command = command;
+        this.label = label;
+        this.fallbackPrefix = fallbackPrefix;
     }
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
-        }
-
-        return Optional.empty();
+    public Command getCommand() {
+        return this.command;
     }
 
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
+    public String getLabel() {
+        return this.label;
+    }
 
-        return false;
+    public String getFallbackPrefix() {
+        return this.fallbackPrefix;
     }
 }

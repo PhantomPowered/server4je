@@ -22,38 +22,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.api.audience;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public final class Iterables {
+public interface Audience<T> {
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
-    }
+    @NotNull
+    Audience<T> filter(@NotNull Predicate<T> filter);
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
-        }
+    @NotNull
+    Audience<T> track(@NotNull T toTracked);
 
-        return Optional.empty();
-    }
+    @NotNull
+    Audience<T> untrack(@NotNull T toUntracked);
 
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
+    @NotNull
+    Collection<T> getTracked();
 
-        return false;
-    }
+    void forEach(@NotNull Consumer<T> consumer);
 }

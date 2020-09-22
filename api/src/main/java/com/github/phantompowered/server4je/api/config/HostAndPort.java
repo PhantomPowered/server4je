@@ -22,38 +22,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.api.config;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
+public class HostAndPort {
 
-public final class Iterables {
+    private static final int DEFAULT_MC_PORT = 25565;
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    @Contract(value = "_ -> new", pure = true)
+    public static @NotNull HostAndPort of(@NotNull String host) {
+        return of(host, DEFAULT_MC_PORT);
     }
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
-        }
-
-        return Optional.empty();
+    @Contract(value = "_, _ -> new", pure = true)
+    public static @NotNull HostAndPort of(@NotNull String host, int port) {
+        return new HostAndPort(host, port);
     }
 
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
+    private String host;
+    private int port;
 
-        return false;
+    private HostAndPort(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
+    public String getHost() {
+        return this.host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return this.port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

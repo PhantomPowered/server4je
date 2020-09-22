@@ -22,38 +22,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.api.config;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
+import com.github.phantompowered.server4je.api.network.NetworkListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
 
-public final class Iterables {
+public interface ServerConfig {
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
-    }
+    @NotNull Collection<NetworkListener> getNetworkListeners();
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
-        }
+    @NotNull Collection<String> getWorldsToLoad();
 
-        return Optional.empty();
-    }
+    @NotNull IpForwardingMode getIpForwardingMode();
 
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
+    @Nullable String getVelocityForwardSecret();
 
-        return false;
+    @NotNull String getServerModName();
+
+    int getMaxPlayers();
+
+    int getCompressionThreshold();
+
+    enum IpForwardingMode {
+
+        DISABLED,
+        VELOCITY,
+        BUNGEECORD
     }
 }

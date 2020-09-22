@@ -22,38 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.logging;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
+import org.jline.utils.InputStreamReader;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
-public final class Iterables {
+public final class HeaderReader {
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    private HeaderReader() {
+        throw new UnsupportedOperationException();
     }
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
+    @NotNull
+    public static String readHeader() {
+        try (var inputStream = HeaderReader.class.getClassLoader().getResourceAsStream("header.txt");
+             var reader = new BufferedReader(new InputStreamReader(Preconditions.checkNotNull(inputStream, "input stream")))) {
+            return reader.lines().collect(Collectors.joining("\n"));
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to read header.txt", exception);
         }
-
-        return Optional.empty();
-    }
-
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

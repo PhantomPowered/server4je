@@ -22,38 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.security;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Predicate;
 
-public final class Iterables {
+public final class CallerUtils {
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    private CallerUtils() {
+        throw new UnsupportedOperationException();
     }
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
+    @NotNull
+    public static Optional<Class<?>> getCallerClass() {
+        StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
+        String callerClassName = null;
+        for (int i = 1; i < stElements.length; i++) {
+            StackTraceElement traceElement = stElements[i];
+            if (!traceElement.getClassName().equals(CallerUtils.class.getName()) && traceElement.getClassName().indexOf("java.lang.Thread") != 0) {
+                if (callerClassName == null) {
+                    callerClassName = traceElement.getClassName();
+                } else if (!callerClassName.equals(traceElement.getClassName())) {
+                    try {
+                        return Optional.of(Class.forName(traceElement.getClassName()));
+                    } catch (ClassNotFoundException ignored) {
+                    }
+                }
             }
         }
 
         return Optional.empty();
-    }
-
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -22,38 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.scheduler;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
-public final class Iterables {
+public class ConsumerServerTask extends ServerTask {
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    private final Consumer<BukkitTask> consumer;
+
+    protected ConsumerServerTask(int taskId, Plugin owner, Consumer<BukkitTask> execute, long delayBetweenRuns, long nextRunningTick, boolean sync) {
+        super(taskId, owner, null, delayBetweenRuns, nextRunningTick, sync);
+        this.consumer = execute;
     }
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
-        }
-
-        return Optional.empty();
+    protected ConsumerServerTask(int taskId, Plugin owner, boolean sync, long nextRunningTick, Consumer<BukkitTask> consumer) {
+        super(taskId, owner, null, sync, nextRunningTick);
+        this.consumer = consumer;
     }
 
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
+    @Override
+    public void run0() {
+        try {
+            this.consumer.accept(this);
+        } catch (Throwable throwable) {
+            LOGGER.error("Unable to handle tick of task " + this.execute.getClass().getName() + " for plugin "
+                + (this.owner == null ? "server" : this.owner.getName()) + ". Stopping to prevent further issues.", throwable);
+            this.nextRunningTick = -1;
+            this.running = false;
         }
-
-        return false;
     }
 }

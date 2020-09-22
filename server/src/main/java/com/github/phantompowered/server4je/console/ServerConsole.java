@@ -22,38 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.console;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
-import org.jetbrains.annotations.NotNull;
+import net.minecrell.terminalconsole.SimpleTerminalConsole;
+import org.bukkit.Bukkit;
+import org.jline.reader.Candidate;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public final class Iterables {
+public class ServerConsole extends SimpleTerminalConsole {
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    @Override
+    protected LineReader buildReader(LineReaderBuilder builder) {
+        return super.buildReader(builder.appName("server4je").completer((reader, line, candidates) -> {
+            List<String> suggestions = Bukkit.getCommandMap().tabComplete(Bukkit.getConsoleSender(), line.line());
+            if (suggestions != null) {
+                candidates.addAll(suggestions.stream().map(Candidate::new).collect(Collectors.toList()));
+            }
+        }));
     }
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
-        }
-
-        return Optional.empty();
+    @Override
+    protected boolean isRunning() {
+        return !Bukkit.isStopping();
     }
 
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
+    @Override
+    protected void runCommand(String command) {
+        Bukkit.getCommandMap().dispatch(Bukkit.getConsoleSender(), command);
+    }
 
-        return false;
+    @Override
+    protected void shutdown() {
+        Bukkit.shutdown();
     }
 }

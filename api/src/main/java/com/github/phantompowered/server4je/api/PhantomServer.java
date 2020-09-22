@@ -24,6 +24,8 @@
  */
 package com.github.phantompowered.server4je.api;
 
+import com.github.phantompowered.server4je.api.audience.Audience;
+import com.github.phantompowered.server4je.api.config.ServerConfig;
 import com.github.phantompowered.server4je.api.network.NetworkManager;
 import com.github.phantompowered.server4je.api.player.OfflinePlayerManager;
 import com.github.phantompowered.server4je.api.player.PlayerManager;
@@ -33,9 +35,10 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class PhantomServer implements Server {
+public abstract class PhantomServer implements Server, Audience<Player> {
 
     private static PhantomServer theServer;
 
@@ -70,6 +73,9 @@ public abstract class PhantomServer implements Server {
 
     @NotNull
     public abstract String getPrompt();
+
+    @NotNull
+    public abstract ServerConfig getConfig();
 
     @Override
     @Deprecated

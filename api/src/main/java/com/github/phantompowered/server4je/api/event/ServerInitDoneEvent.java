@@ -22,38 +22,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.common.collect;
+package com.github.phantompowered.server4je.api.event;
 
-import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
+import com.github.phantompowered.server4je.api.PhantomServer;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
+public class ServerInitDoneEvent extends Event {
 
-public final class Iterables {
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private Iterables() {
-        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    private final PhantomServer phantomServer;
+
+    public ServerInitDoneEvent(PhantomServer phantomServer) {
+        this.phantomServer = phantomServer;
     }
 
-    public static <T> Optional<T> first(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
-        for (T t : collection) {
-            if (filter.test(t)) {
-                return Optional.of(t);
-            }
-        }
-
-        return Optional.empty();
+    public PhantomServer getPhantomServer() {
+        return this.phantomServer;
     }
 
-    public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
-        for (T t : collection) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
+    @Override
+    public @NotNull HandlerList getHandlers() {
+        return HANDLER_LIST;
+    }
 
-        return false;
+    @NotNull
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
     }
 }
