@@ -50,7 +50,7 @@ public class DefaultSessionService extends BaseSessionService {
 
     @Override
     public @NotNull GameProfile fillProfile(@NotNull GameProfile gameProfile, boolean requireSecure) {
-        if (gameProfile.getUniqueId() == null) {
+        if (gameProfile.getId() == null) {
             return gameProfile;
         }
 
@@ -59,9 +59,9 @@ public class DefaultSessionService extends BaseSessionService {
 
     @NotNull
     protected GameProfile fillProfile0(@NotNull GameProfile gameProfile, boolean requireSecure) {
-        Preconditions.checkNotNull(gameProfile.getUniqueId(), "Game profile needs non-null unique id");
+        Preconditions.checkNotNull(gameProfile.getId(), "Game profile needs non-null unique id");
 
-        GameProfile profile = this.getGameProfile(gameProfile.getUniqueId(), requireSecure);
+        GameProfile profile = this.getGameProfile(gameProfile.getId(), requireSecure);
         if (profile != null) {
             gameProfile.override(profile);
         }

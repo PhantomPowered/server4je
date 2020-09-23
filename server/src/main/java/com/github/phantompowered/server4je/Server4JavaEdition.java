@@ -25,7 +25,6 @@
 package com.github.phantompowered.server4je;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
-import com.destroystokyo.paper.profile.PlayerProfile;
 import com.github.phantompowered.server4je.api.PhantomServer;
 import com.github.phantompowered.server4je.api.audience.Audience;
 import com.github.phantompowered.server4je.api.config.ServerConfig;
@@ -33,11 +32,16 @@ import com.github.phantompowered.server4je.api.event.ServerInitDoneEvent;
 import com.github.phantompowered.server4je.api.network.NetworkManager;
 import com.github.phantompowered.server4je.api.player.OfflinePlayerManager;
 import com.github.phantompowered.server4je.api.player.PlayerManager;
+import com.github.phantompowered.server4je.api.profile.PhantomPlayerProfile;
 import com.github.phantompowered.server4je.api.version.ServerVersion;
+import com.github.phantompowered.server4je.authlib.profile.GameProfile;
 import com.github.phantompowered.server4je.command.ServerCommandMap;
 import com.github.phantompowered.server4je.common.exception.ReportedException;
+import com.github.phantompowered.server4je.config.JsonServerConfig;
+import com.github.phantompowered.server4je.eula.Eula;
 import com.github.phantompowered.server4je.gson.JsonDataLoader;
 import com.github.phantompowered.server4je.options.ServerCliOptionUtil;
+import com.github.phantompowered.server4je.plugin.ServerPluginManager;
 import com.github.phantompowered.server4je.scheduler.ServerScheduler;
 import com.github.phantompowered.server4je.service.ServerServicesManager;
 import com.github.phantompowered.server4je.tick.ServerTicker;
@@ -72,6 +76,8 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.CachedServerIcon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -83,13 +89,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 
 public class Server4JavaEdition extends PhantomServer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Server4JavaEdition.class);
 
     private final CommandMap commandMap = new ServerCommandMap();
     private final BukkitScheduler bukkitScheduler = new ServerScheduler();
     private final ServicesManager servicesManager = new ServerServicesManager();
+    private final PluginManager pluginManager = new ServerPluginManager();
     private final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Server4JavaEdition.class.getSimpleName());
     private final AtomicBoolean running = new AtomicBoolean(true);
     private final Spigot spigot = new ServerSpigot();
@@ -97,6 +105,8 @@ public class Server4JavaEdition extends PhantomServer {
     private final OptionSet options;
     private final ServerVersion serverVersion;
     private final ListeningScheduledExecutorService executorService;
+
+    private ServerConfig serverConfig;
 
     public Server4JavaEdition(OptionSet options) {
         this.options = options;
@@ -121,6 +131,13 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     protected void bootstrap() {
+        if (!Eula.loadEula()) {
+            LOGGER.error("You need to agree to the EULA in order to run the server. Go to eula.txt for more info.");
+            return;
+        }
+
+        this.serverConfig = JsonServerConfig.load(((File) this.options.valueOf("config")).toPath());
+
         Bukkit.getPluginManager().callEvent(new ServerInitDoneEvent(this));
         ServerTicker.start();
     }
@@ -167,15 +184,15 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public @NotNull
-    ServerConfig getConfig() {
+    @NotNull
+    public ServerConfig getConfig() {
         return null;
     }
 
     @Override
     @NotNull
     public String getName() {
-        return this.getConfig().getServerModName();
+        return "server4je (" + this.serverVersion.getName() + " @ " + this.serverVersion.getId() + ")";
     }
 
     @Override
@@ -346,7 +363,7 @@ public class Server4JavaEdition extends PhantomServer {
     @Override
     @NotNull
     public PluginManager getPluginManager() {
-        return null;
+        return this.pluginManager;
     }
 
     @Override
@@ -422,7 +439,7 @@ public class Server4JavaEdition extends PhantomServer {
 
     @Override
     @NotNull
-    public Logger getLogger() {
+    public java.util.logging.Logger getLogger() {
         return this.logger;
     }
 
@@ -884,25 +901,25 @@ public class Server4JavaEdition extends PhantomServer {
 
     @Override
     @NotNull
-    public PlayerProfile createProfile(@NotNull UUID uuid) {
-        return null;
+    public PhantomPlayerProfile createProfile(@NotNull UUID uuid) {
+        return new GameProfile(uuid, null);
     }
 
     @Override
     @NotNull
-    public PlayerProfile createProfile(@NotNull String s) {
-        return null;
+    public PhantomPlayerProfile createProfile(@NotNull String s) {
+        return new GameProfile(null, s);
     }
 
     @Override
     @NotNull
-    public PlayerProfile createProfile(@Nullable UUID uuid, @Nullable String s) {
-        return null;
+    public PhantomPlayerProfile createProfile(@Nullable UUID uuid, @Nullable String s) {
+        return new GameProfile(uuid, s);
     }
 
     @Override
     public int getCurrentTick() {
-        return 0;
+        return Math.toIntExact(ServerTicker.getCurrentTick());
     }
 
     @Override

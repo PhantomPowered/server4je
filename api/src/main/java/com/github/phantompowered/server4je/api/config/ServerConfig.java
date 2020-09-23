@@ -27,24 +27,56 @@ package com.github.phantompowered.server4je.api.config;
 import com.github.phantompowered.server4je.api.network.NetworkListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collection;
 
 public interface ServerConfig {
 
-    @NotNull Collection<NetworkListener> getNetworkListeners();
+    @NotNull
+    Collection<NetworkListener> getNetworkListeners();
 
-    @NotNull Collection<String> getWorldsToLoad();
+    void setNetworkListeners(@NotNull Collection<NetworkListener> networkListeners);
 
-    @NotNull IpForwardingMode getIpForwardingMode();
+    void addNetworkListeners(@NotNull NetworkListener... networkListener);
 
-    @Nullable String getVelocityForwardSecret();
+    void removeNetworkListeners(@NotNull NetworkListener... networkListeners);
 
-    @NotNull String getServerModName();
+    void clearNetworkListeners();
+
+    @NotNull
+    Collection<String> getWorldsToLoad();
+
+    void setWorldsToLoad(@NotNull Collection<String> worlds);
+
+    void addWorldsToLoad(@NotNull String... worlds);
+
+    void removeWorldsToLoad(@NotNull String... worlds);
+
+    void clearWorldsToLoad();
+
+    @NotNull
+    Messages getMessages();
+
+    void setMessages(@NotNull Messages messages);
+
+    @NotNull
+    IpForwardingMode getIpForwardingMode();
+
+    void setIpForwardingMode(@NotNull IpForwardingMode mode, @Nullable String velocityForwardSecret);
+
+    @Nullable
+    String getVelocityForwardSecret();
 
     int getMaxPlayers();
 
+    void setMaxPlayers(@Range(from = 0, to = Integer.MAX_VALUE) int maxPlayers);
+
     int getCompressionThreshold();
+
+    void setCompressionThreshold(@Range(from = 0, to = Integer.MAX_VALUE) int compressionThreshold);
+
+    boolean isCompressionEnabled();
 
     enum IpForwardingMode {
 

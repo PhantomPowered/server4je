@@ -24,46 +24,213 @@
  */
 package com.github.phantompowered.server4je.config;
 
+import com.github.phantompowered.server4je.api.config.Messages;
 import com.github.phantompowered.server4je.api.config.ServerConfig;
 import com.github.phantompowered.server4je.api.network.NetworkListener;
+import com.github.phantompowered.server4je.network.listener.ServerNetworkListener;
+import com.google.common.base.Preconditions;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
-public class JsonServerConfig implements ServerConfig {
+public final class JsonServerConfig implements ServerConfig {
+
+    private static final Gson GSON = new GsonBuilder()
+        .registerTypeAdapter(TypeToken.getParameterized(Collection.class, NetworkListener.class).getType(), new NetworkListenerCollectionSerializer())
+        .disableHtmlEscaping()
+        .setPrettyPrinting()
+        .serializeNulls()
+        .create();
+
+    @NotNull
+    public static ServerConfig load(@NotNull Path path) {
+        if (Files.notExists(path)) {
+            try (var writer = new OutputStreamWriter(Files.newOutputStream(path))) {
+                GSON.toJson(new JsonServerConfig(), writer);
+            } catch (IOException exception) {
+                throw new IllegalStateException("Unable to write server config file", exception);
+            }
+        }
+
+        try (var reader = new InputStreamReader(Files.newInputStream(path))) {
+            return GSON.fromJson(reader, JsonServerConfig.class);
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to read server config file", exception);
+        }
+    }
+
+    private Collection<NetworkListener> networkListeners;
+    private Collection<String> worldsToLoad;
+    private Messages messages;
+    private IpForwardingMode ipForwardingMode;
+    private @Nullable String velocityForwardingSecret;
+    private int maxPlayers;
+    private int compressionThreshold;
+
+    private JsonServerConfig() {
+        this.networkListeners = Collections.singletonList(new ServerNetworkListener("0.0.0.0", 25565));
+        this.worldsToLoad = Arrays.asList("world", "world_nether", "world_the_end");
+        this.messages = new Messages();
+        this.ipForwardingMode = IpForwardingMode.DISABLED;
+        this.maxPlayers = 20;
+        this.compressionThreshold = 256;
+    }
+
     @Override
     public @NotNull Collection<NetworkListener> getNetworkListeners() {
-        return null;
+        return this.networkListeners;
     }
 
     @Override
-    public @NotNull Collection<String> getWorldsToLoad() {
-        return null;
+    public void setNetworkListeners(@NotNull Collection<NetworkListener> networkListeners) {
+        this.networkListeners = networkListeners;
     }
 
     @Override
-    public @NotNull IpForwardingMode getIpForwardingMode() {
-        return null;
+    public void addNetworkListeners(@NotNull NetworkListener... networkListener) {
+        this.networkListeners.addAll(Arrays.asList(networkListener));
     }
 
     @Override
-    public @Nullable String getVelocityForwardSecret() {
-        return null;
+    public void removeNetworkListeners(@NotNull NetworkListener... networkListeners) {
+        this.networkListeners.removeAll(Arrays.asList(networkListeners));
     }
 
     @Override
-    public @NotNull String getServerModName() {
-        return null;
+    public void clearNetworkListeners() {
+        this.networkListeners.clear();
+    }
+
+    @Override
+    @NotNull
+    public Collection<String> getWorldsToLoad() {
+        return this.worldsToLoad;
+    }
+
+    @Override
+    public void setWorldsToLoad(@NotNull Collection<String> worlds) {
+        this.worldsToLoad = worlds;
+    }
+
+    @Override
+    public void addWorldsToLoad(@NotNull String... worlds) {
+        this.worldsToLoad.addAll(Arrays.asList(worlds));
+    }
+
+    @Override
+    public void removeWorldsToLoad(@NotNull String... worlds) {
+        this.worldsToLoad.removeAll(Arrays.asList(worlds));
+    }
+
+    @Override
+    public void clearWorldsToLoad() {
+        this.worldsToLoad.clear();
+    }
+
+    @Override
+    @NotNull
+    public Messages getMessages() {
+        return this.messages;
+    }
+
+    @Override
+    public void setMessages(@NotNull Messages messages) {
+        this.messages = messages;
+    }
+
+    @Override
+    @NotNull
+    public IpForwardingMode getIpForwardingMode() {
+        return this.ipForwardingMode;
+    }
+
+    @Override
+    public void setIpForwardingMode(@NotNull IpForwardingMode mode, @Nullable String velocityForwardSecret) {
+        Preconditions.checkArgument(
+            mode != IpForwardingMode.VELOCITY || velocityForwardSecret != null,
+            "If ip forward mode is set to modern velocity forwarding please ensure you set the velocity forwarding secret"
+        );
+
+        this.ipForwardingMode = mode;
+        this.velocityForwardingSecret = velocityForwardSecret;
+    }
+
+    @Override
+    @Nullable
+    public String getVelocityForwardSecret() {
+        return this.velocityForwardingSecret;
     }
 
     @Override
     public int getMaxPlayers() {
-        return 0;
+        return this.maxPlayers;
+    }
+
+    @Override
+    public void setMaxPlayers(@Range(from = 0, to = Integer.MAX_VALUE) int maxPlayers) {
+        this.maxPlayers = maxPlayers;
     }
 
     @Override
     public int getCompressionThreshold() {
-        return 0;
+        return this.compressionThreshold;
+    }
+
+    @Override
+    public void setCompressionThreshold(@Range(from = 0, to = Integer.MAX_VALUE) int compressionThreshold) {
+        this.compressionThreshold = compressionThreshold;
+    }
+
+    @Override
+    public boolean isCompressionEnabled() {
+        return this.compressionThreshold > 0;
+    }
+
+    private static final class NetworkListenerCollectionSerializer
+        implements JsonSerializer<Collection<NetworkListener>>, JsonDeserializer<Collection<NetworkListener>> {
+
+        @Override
+        public Collection<NetworkListener> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            Collection<NetworkListener> networkListeners = new ArrayList<>();
+            JsonArray jsonElements = json.getAsJsonArray();
+
+            for (JsonElement jsonElement : jsonElements) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                networkListeners.add(new ServerNetworkListener(
+                    jsonObject.get("host").getAsString(),
+                    jsonObject.get("port").getAsInt(),
+                    jsonObject.get("preventProxyConnections").getAsBoolean()
+                ));
+            }
+
+            return networkListeners;
+        }
+
+        @Override
+        public JsonElement serialize(Collection<NetworkListener> src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonArray jsonElements = new JsonArray();
+            for (NetworkListener networkListener : src) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("host", networkListener.getHostString());
+                jsonObject.addProperty("port", networkListener.getPort());
+                jsonObject.addProperty("preventProxyConnections", networkListener.isPreventProxyConnections());
+                jsonElements.add(jsonObject);
+            }
+
+            return jsonElements;
+        }
     }
 }

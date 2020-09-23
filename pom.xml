@@ -12,7 +12,6 @@
     <modules>
         <module>api</module>
         <module>common</module>
-        <module>benchmark</module>
         <module>natives</module>
         <module>authlib</module>
         <module>protocol</module>
@@ -31,7 +30,7 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>20.1.0</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

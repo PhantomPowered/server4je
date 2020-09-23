@@ -29,6 +29,7 @@ import com.github.phantompowered.server4je.api.config.ServerConfig;
 import com.github.phantompowered.server4je.api.network.NetworkManager;
 import com.github.phantompowered.server4je.api.player.OfflinePlayerManager;
 import com.github.phantompowered.server4je.api.player.PlayerManager;
+import com.github.phantompowered.server4je.api.profile.PhantomPlayerProfile;
 import com.github.phantompowered.server4je.api.version.ServerVersion;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -37,6 +38,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public abstract class PhantomServer implements Server, Audience<Player> {
 
@@ -52,7 +56,18 @@ public abstract class PhantomServer implements Server, Audience<Player> {
         Bukkit.setServer(theServer);
     }
 
-    // ===
+    // == changed bukkit methods
+
+    @Override
+    public abstract @NotNull PhantomPlayerProfile createProfile(@NotNull UUID uuid);
+
+    @Override
+    public abstract @NotNull PhantomPlayerProfile createProfile(@NotNull String name);
+
+    @Override
+    public abstract @NotNull PhantomPlayerProfile createProfile(@Nullable UUID uuid, @Nullable String name);
+
+    // == our methods
 
     @NotNull
     public abstract ListeningExecutorService getExecutor();
@@ -76,6 +91,8 @@ public abstract class PhantomServer implements Server, Audience<Player> {
 
     @NotNull
     public abstract ServerConfig getConfig();
+
+    // == removed methods
 
     @Override
     @Deprecated

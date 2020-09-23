@@ -25,18 +25,34 @@
 package com.github.phantompowered.server4je.authlib.profile;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
+import com.github.phantompowered.server4je.api.profile.PhantomPlayerProfile;
+import com.github.phantompowered.server4je.authlib.SessionService;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.base.Ticker;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class GameProfile {
+public class GameProfile implements PhantomPlayerProfile {
 
-    private final Multimap<String, ProfileProperty> properties = LinkedHashMultimap.create();
+    public static final AtomicReference<SessionService> DEFAULT_SESSION_SERVICE = new AtomicReference<>(); // Set by the server
+    private static final Cache<GameProfile, GameProfile> CACHE = CacheBuilder.newBuilder()
+        .expireAfterWrite(5, TimeUnit.HOURS)
+        .ticker(Ticker.systemTicker())
+        .build();
+
+    private final Set<ProfileProperty> properties = Sets.newConcurrentHashSet();
 
     private UUID uniqueId;
     private String name;
@@ -49,19 +65,68 @@ public class GameProfile {
         this.name = name;
     }
 
-    @Nullable
-    public UUID getUniqueId() {
-        return this.uniqueId;
-    }
-
-    @Nullable
-    public String getName() {
+    @Override
+    public @Nullable String getName() {
         return this.name;
     }
 
+    @Override
+    public @NotNull String setName(@Nullable String name) {
+        final String prev = this.name;
+        this.name = name;
+        return prev;
+    }
+
+    @Override
+    public @Nullable UUID getId() {
+        return this.uniqueId;
+    }
+
+    @Override
+    public @Nullable UUID setId(@Nullable UUID uuid) {
+        final UUID prev = this.uniqueId;
+        this.uniqueId = uuid;
+        return prev;
+    }
+
     @NotNull
-    public Multimap<String, ProfileProperty> getProperties() {
+    public Set<ProfileProperty> getProperties() {
         return this.properties;
+    }
+
+    @Override
+    public boolean hasProperty(@Nullable String property) {
+        for (ProfileProperty profileProperty : this.properties) {
+            if (profileProperty.getName().equals(property)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void setProperty(@NotNull ProfileProperty property) {
+        this.properties.removeIf(profileProperty -> profileProperty.getName().equals(property.getName()));
+        this.properties.add(property);
+    }
+
+    @Override
+    public void setProperties(@NotNull Collection<ProfileProperty> properties) {
+        for (ProfileProperty property : properties) {
+            this.properties.removeIf(profileProperty -> profileProperty.getName().equals(property.getName()));
+            this.properties.add(property);
+        }
+    }
+
+    @Override
+    public boolean removeProperty(@Nullable String property) {
+        return this.properties.removeIf(profileProperty -> profileProperty.getName().equals(property));
+    }
+
+    @Override
+    public void clearProperties() {
+        this.properties.clear();
     }
 
     public boolean isLegacy() {
@@ -72,13 +137,59 @@ public class GameProfile {
         return this.uniqueId != null && this.name != null && !this.name.isBlank();
     }
 
+    @Override
+    public boolean completeFromCache() {
+        return this.completeFromCache(Bukkit.getOnlineMode());
+    }
+
+    @Override
+    public boolean completeFromCache(boolean onlineMode) {
+        return this.completeFromCache(true, onlineMode);
+    }
+
+    @Override
+    public boolean completeFromCache(boolean lookupUUID, boolean onlineMode) {
+        if (lookupUUID && onlineMode && this.uniqueId == null) {
+            DEFAULT_SESSION_SERVICE.get().fillProfile(this, true);
+            if (this.isComplete()) {
+                CACHE.put(this, this);
+            }
+        }
+
+        GameProfile other = CACHE.getIfPresent(this);
+        if (other != null) {
+            this.override(other);
+        }
+
+        return other != null;
+    }
+
+    @Override
+    public boolean complete(boolean textures) {
+        return this.complete(textures, Bukkit.getOnlineMode());
+    }
+
+    @Override
+    public boolean complete(boolean textures, boolean onlineMode) {
+        boolean completedUsingCache = this.completeFromCache(true, onlineMode);
+        if (onlineMode && (!completedUsingCache || (textures && !this.hasTextures()))) {
+            DEFAULT_SESSION_SERVICE.get().fillProfile(this, true);
+            if (this.isComplete()) {
+                CACHE.put(this, this);
+            }
+        }
+
+        return this.isComplete() && (!textures || !onlineMode || this.hasTextures());
+    }
+
+    @Override
     public boolean hasTextures() {
-        return !this.properties.get("textures").isEmpty();
+        return this.hasProperty("textures");
     }
 
     public void override(@NotNull GameProfile gameProfile) {
-        if (gameProfile.getUniqueId() != null) {
-            this.uniqueId = gameProfile.getUniqueId();
+        if (gameProfile.getId() != null) {
+            this.uniqueId = gameProfile.getId();
         }
 
         if (gameProfile.getName() != null) {
@@ -86,7 +197,37 @@ public class GameProfile {
         }
 
         this.legacy = gameProfile.isLegacy();
-        this.properties.putAll(gameProfile.getProperties());
+        this.properties.addAll(gameProfile.getProperties());
+    }
+
+    @Override
+    public @NotNull CompletableFuture<Boolean> completeFromCacheAsync() {
+        return CompletableFuture.supplyAsync(this::completeFromCache);
+    }
+
+    @Override
+    public @NotNull CompletableFuture<Boolean> completeFromCacheAsync(boolean onlineMode) {
+        return CompletableFuture.supplyAsync(() -> this.completeFromCache(onlineMode));
+    }
+
+    @Override
+    public @NotNull CompletableFuture<Boolean> completeFromCacheAsync(boolean lookupUUID, boolean onlineMode) {
+        return CompletableFuture.supplyAsync(() -> this.completeFromCache(lookupUUID, onlineMode));
+    }
+
+    @Override
+    public @NotNull CompletableFuture<Boolean> completeAsync() {
+        return CompletableFuture.supplyAsync(this::complete);
+    }
+
+    @Override
+    public @NotNull CompletableFuture<Boolean> completeAsync(boolean textures) {
+        return CompletableFuture.supplyAsync(() -> this.complete(textures));
+    }
+
+    @Override
+    public @NotNull CompletableFuture<Boolean> completeAsync(boolean textures, boolean onlineMode) {
+        return CompletableFuture.supplyAsync(() -> this.complete(textures, onlineMode));
     }
 
     @Override

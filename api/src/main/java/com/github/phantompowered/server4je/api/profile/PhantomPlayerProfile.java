@@ -22,25 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.api.network;
+package com.github.phantompowered.server4je.api.profile;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Range;
 
-import java.net.InetSocketAddress;
+import java.util.concurrent.CompletableFuture;
 
-public interface NetworkListener {
-
-    @NotNull
-    InetSocketAddress getHost();
+public interface PhantomPlayerProfile extends PlayerProfile {
 
     @NotNull
-    String getHostString();
+    CompletableFuture<Boolean> completeFromCacheAsync();
 
-    @Range(from = 0, to = 65535)
-    int getPort();
+    @NotNull
+    CompletableFuture<Boolean> completeFromCacheAsync(boolean onlineMode);
 
-    boolean isPreventProxyConnections();
+    @NotNull
+    CompletableFuture<Boolean> completeFromCacheAsync(boolean lookupUUID, boolean onlineMode);
 
-    void setPreventProxyConnections(boolean preventProxyConnections);
+    @NotNull
+    CompletableFuture<Boolean> completeAsync();
+
+    @NotNull
+    CompletableFuture<Boolean> completeAsync(boolean textures);
+
+    @NotNull
+    CompletableFuture<Boolean> completeAsync(boolean textures, boolean onlineMode);
 }
