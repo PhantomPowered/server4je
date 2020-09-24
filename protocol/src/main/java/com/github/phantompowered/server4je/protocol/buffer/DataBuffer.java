@@ -49,7 +49,7 @@ public abstract class DataBuffer extends ByteBuf {
 
     private final ByteBuf dataHolder;
 
-    private DataBuffer(ByteBuf dataHolder) {
+    protected DataBuffer(ByteBuf dataHolder) {
         this.dataHolder = dataHolder;
     }
 
