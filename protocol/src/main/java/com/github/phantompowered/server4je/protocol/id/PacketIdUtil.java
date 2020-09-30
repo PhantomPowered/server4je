@@ -25,8 +25,10 @@
 package com.github.phantompowered.server4je.protocol.id;
 
 import com.github.phantompowered.server4je.common.CommonConstants;
+import com.github.phantompowered.server4je.common.collect.Iterables;
 import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
 import com.github.phantompowered.server4je.common.exception.ReportedException;
+import com.github.phantompowered.server4je.protocol.Packet;
 import com.github.phantompowered.server4je.protocol.state.ProtocolState;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
@@ -36,9 +38,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class PacketIdUtil {
@@ -47,8 +51,8 @@ public final class PacketIdUtil {
         throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
     }
 
-    private static final Map<ProtocolState, Map<String, Short>> SERVER_IDS = new ConcurrentHashMap<>();
-    private static final Map<ProtocolState, Map<String, Short>> CLIENT_IDS = new ConcurrentHashMap<>();
+    private static final Map<ProtocolState, Set<Map.Entry<String, Short>>> SERVER_IDS = new ConcurrentHashMap<>();
+    private static final Map<ProtocolState, Set<Map.Entry<String, Short>>> CLIENT_IDS = new ConcurrentHashMap<>();
     private static final Type TYPE = TypeToken.getParameterized(Map.class, String.class, Short.class).getType();
 
     public static short getServerPacketId(@NotNull ProtocolState state, @NotNull Class<?> clazz) {
@@ -61,16 +65,11 @@ public final class PacketIdUtil {
             ReportedException.throwWrapped("No protocol ids loaded for state " + state);
         }
 
-        Short id = ids.get(clazz.getName());
-        if (id == null) {
-            ReportedException.throwWrapped("Missing protocol id for packet " + clazz.getName());
-        }
-
-        return id;
+        return Iterables.first(ids, entry -> entry.getKey().equals(clazz.getName())).orElseThrow().getValue();
     }
 
     public static short getClientPacketId(@NotNull ProtocolState state, @NotNull Class<?> clazz) {
-        if (SERVER_IDS.isEmpty()) {
+        if (CLIENT_IDS.isEmpty()) {
             loadIds("client");
         }
 
@@ -79,12 +78,29 @@ public final class PacketIdUtil {
             ReportedException.throwWrapped("No protocol ids loaded for state " + state);
         }
 
-        Short id = ids.get(clazz.getName());
-        if (id == null) {
-            ReportedException.throwWrapped("Missing protocol id for packet " + clazz.getName());
+        return Iterables.first(ids, entry -> entry.getKey().equals(clazz.getName())).orElseThrow().getValue();
+    }
+
+    @NotNull
+    public static Packet getClientPacket(@NotNull ProtocolState state, short packetId) {
+        if (CLIENT_IDS.isEmpty()) {
+            loadIds("client");
         }
 
-        return id;
+        var ids = CLIENT_IDS.get(state);
+        if (ids == null) {
+            ReportedException.throwWrapped("No protocol ids loaded for state " + state);
+        }
+
+        return Iterables.first(ids, entry -> entry.getValue() == packetId).map(entry -> {
+            try {
+                //noinspection unchecked
+                Class<? extends Packet> clazz = (Class<? extends Packet>) Class.forName(entry.getKey());
+                return clazz.getDeclaredConstructor().newInstance();
+            } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
+                return null;
+            }
+        }).orElseThrow();
     }
 
     private static void loadIds(@NotNull String type) {
@@ -116,10 +132,10 @@ public final class PacketIdUtil {
 
         switch (type.toLowerCase()) {
             case "server":
-                SERVER_IDS.put(state, idsMapped);
+                SERVER_IDS.put(state, idsMapped.entrySet());
                 break;
             case "client":
-                CLIENT_IDS.put(state, idsMapped);
+                CLIENT_IDS.put(state, idsMapped.entrySet());
                 break;
             default:
                 ReportedException.throwWrapped("No default id state for " + type);

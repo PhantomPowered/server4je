@@ -24,6 +24,7 @@
  */
 package com.github.phantompowered.server4je.scheduler;
 
+import com.github.phantompowered.server4je.api.PhantomServer;
 import com.github.phantompowered.server4je.tick.ServerTicker;
 import com.google.common.base.Preconditions;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -302,6 +303,8 @@ public class ServerScheduler implements BukkitScheduler {
     }
 
     public void heartbeat(long currentTick) {
+        PhantomServer.getInstance().ensureMainThread();
+
         for (ServerTask queuedTask : this.queuedTasks) {
             if (queuedTask.isSync()) {
                 queuedTask.execute(currentTick);

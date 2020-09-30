@@ -26,9 +26,11 @@ package com.github.phantompowered.server4je.tick;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import com.destroystokyo.paper.event.server.ServerTickStartEvent;
+import com.github.phantompowered.server4je.api.PhantomServer;
 import com.github.phantompowered.server4je.scheduler.ServerScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
+@ApiStatus.Internal
 public final class ServerTicker {
 
     private ServerTicker() {
@@ -62,6 +65,8 @@ public final class ServerTicker {
 
         while (!Bukkit.isStopping()) {
             try {
+                PhantomServer.getInstance().ensureMainThread(); // ensure that we are still running on the main thread to prevent illegal modification
+
                 long currentTickDiff = System.currentTimeMillis() - currentTickTime;
                 currentTickTime = System.currentTimeMillis();
                 if (currentTickDiff < TICKS_PER_SECOND) {

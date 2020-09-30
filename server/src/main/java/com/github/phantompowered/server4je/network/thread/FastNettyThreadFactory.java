@@ -22,9 +22,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je;
+package com.github.phantompowered.server4je.network.thread;
 
-public interface NativeIdentifier {
+import io.netty.util.concurrent.FastThreadLocalThread;
+import org.jetbrains.annotations.NotNull;
 
-    boolean isNative();
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public final class FastNettyThreadFactory implements ThreadFactory {
+
+    private final String nameFormat;
+    private final AtomicInteger threadNumber = new AtomicInteger();
+
+    public FastNettyThreadFactory(String nameFormat) {
+        this.nameFormat = nameFormat;
+    }
+
+    @Override
+    public Thread newThread(@NotNull Runnable r) {
+        String name = String.format(this.nameFormat, this.threadNumber.getAndIncrement());
+        return new FastThreadLocalThread(r, name);
+    }
 }

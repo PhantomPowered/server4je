@@ -27,6 +27,7 @@ package com.github.phantompowered.server4je.network.buffer;
 import io.netty.buffer.ByteBuf;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @ApiStatus.Internal
 public final class ByteBufUtil {
@@ -64,6 +65,16 @@ public final class ByteBufUtil {
     }
 
     private static long readUnsignedLongFixedMaximumLength(@NotNull ByteBuf byteBuf, int maxRead) {
+        Long varLong = readUnsignedLongFixedMaximumLengthSilently(byteBuf, maxRead);
+        if (varLong == null) {
+            throw BAD_VAR_INT_DECODED;
+        }
+
+        return varLong;
+    }
+
+    @Nullable
+    public static Long readUnsignedLongFixedMaximumLengthSilently(@NotNull ByteBuf byteBuf, int maxRead) {
         long i = 0;
         for (int j = 0; j < maxRead; j++) {
             int k = byteBuf.readByte();
@@ -73,6 +84,12 @@ public final class ByteBufUtil {
             }
         }
 
-        throw BAD_VAR_INT_DECODED;
+        return null;
+    }
+
+    public static void releaseFully(@NotNull ByteBuf byteBuf) {
+        if (byteBuf.refCnt() > 0) {
+            byteBuf.release(byteBuf.refCnt());
+        }
     }
 }

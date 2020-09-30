@@ -22,18 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.compression;
+package com.github.phantompowered.server4je.network;
 
-import com.github.phantompowered.server4je.NativeIdentifier;
-import io.netty.buffer.ByteBuf;
-import org.jetbrains.annotations.NotNull;
+import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInstantiatedDirectlyException;
 
-import java.io.Closeable;
-import java.util.zip.DataFormatException;
+public final class NetworkConstants {
 
-public interface Compressor extends NativeIdentifier, Closeable {
+    public static final String READ_TIMEOUT = "read-timeout";
+    public static final String LEGACY_DECODER = "legacy-decoder";
+    public static final String VAR_INT_21_FRAME_DECODER = "var-int-21-frame-decoder";
+    public static final String LEGACY_ENCODER = "legacy-encoder";
+    public static final String VAR_INT_21_FRAME_ENCODER = "var-int-21-frame-encoder";
+    public static final String PACKET_DECODER = "packet-decoder";
+    public static final String PACKET_ENCODER = "packet-encoder";
+    // lazy handlers
+    public static final String PACKET_DECOMPRESSOR = "packet-decompressor";
+    public static final String PACKET_COMPRESSOR = "packet-compressor";
 
-    void inflate(@NotNull ByteBuf source, @NotNull ByteBuf target, int size) throws DataFormatException;
-
-    void deflate(@NotNull ByteBuf source, @NotNull ByteBuf target) throws DataFormatException;
+    private NetworkConstants() {
+        throw ClassShouldNotBeInstantiatedDirectlyException.INSTANCE;
+    }
 }

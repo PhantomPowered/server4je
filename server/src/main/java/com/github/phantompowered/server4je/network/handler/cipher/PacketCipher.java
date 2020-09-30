@@ -22,37 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.compression;
+package com.github.phantompowered.server4je.network.handler.cipher;
 
-import java.lang.annotation.Native;
-import java.util.zip.DataFormatException;
+import com.github.phantompowered.server4je.network.buffer.ByteBufUtil;
+import com.velocitypowered.natives.encryption.VelocityCipher;
+import com.velocitypowered.natives.util.MoreByteBufUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageEncoder;
 
-class NativeCompressor {
+import java.util.List;
 
-    @Native
-    private boolean finished;
-    @Native
-    private int processed;
+public class PacketCipher extends MessageToMessageEncoder<ByteBuf> {
 
-    static {
-        init();
+    private final VelocityCipher cipher;
+
+    public PacketCipher(VelocityCipher cipher) {
+        this.cipher = cipher;
     }
 
-    private static native void init();
-
-    protected native long init(boolean inflate, int level);
-
-    protected native void free(boolean inflate, long ctx);
-
-    protected native void reset(boolean inflate, long ctx);
-
-    protected native int process(boolean inflate, long ctx, long sourceAddress, int sourceLength, long targetAddress, int targetLength) throws DataFormatException;
-
-    protected boolean isFinished() {
-        return this.finished;
+    @Override
+    protected void encode(ChannelHandlerContext context, ByteBuf byteBuf, List<Object> list) {
+        ByteBuf in = MoreByteBufUtils.ensureCompatible(context.alloc(), this.cipher, byteBuf);
+        try {
+            this.cipher.process(in);
+            list.add(in);
+        } catch (Throwable throwable) {
+            ByteBufUtil.releaseFully(in);
+            throw throwable;
+        }
     }
 
-    protected int getProcessed() {
-        return this.processed;
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        this.cipher.close();
     }
 }

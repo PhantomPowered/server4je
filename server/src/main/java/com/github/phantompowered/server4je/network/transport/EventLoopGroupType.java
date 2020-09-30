@@ -22,15 +22,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.cipher;
+package com.github.phantompowered.server4je.network.transport;
 
-import com.github.phantompowered.server4je.NativeIdentifier;
-import io.netty.buffer.ByteBuf;
-import org.jetbrains.annotations.NotNull;
+public enum EventLoopGroupType {
 
-import java.io.Closeable;
+    BOSS("Boss"),
+    WORKER("Worker");
 
-public interface Crypto extends NativeIdentifier, Closeable {
+    private final String name;
 
-    void process(@NotNull ByteBuf source);
+    EventLoopGroupType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 }

@@ -79,6 +79,7 @@ public final class JsonServerConfig implements ServerConfig {
     private @Nullable String velocityForwardingSecret;
     private int maxPlayers;
     private int compressionThreshold;
+    private long readTimeoutMilliseconds;
 
     private JsonServerConfig() {
         this.networkListeners = Collections.singletonList(new ServerNetworkListener("0.0.0.0", 25565));
@@ -197,6 +198,11 @@ public final class JsonServerConfig implements ServerConfig {
     @Override
     public boolean isCompressionEnabled() {
         return this.compressionThreshold > 0;
+    }
+
+    @Override
+    public long getReadTimeoutMilliseconds() {
+        return Math.max(0, this.readTimeoutMilliseconds);
     }
 
     private static final class NetworkListenerCollectionSerializer

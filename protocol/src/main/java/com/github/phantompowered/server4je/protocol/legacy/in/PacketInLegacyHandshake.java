@@ -22,28 +22,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.api.network;
+package com.github.phantompowered.server4je.protocol.legacy.in;
 
+import com.github.phantompowered.server4je.protocol.Packet;
+import com.github.phantompowered.server4je.protocol.annotation.BufferStatus;
+import com.github.phantompowered.server4je.protocol.buffer.DataBuffer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.UnmodifiableView;
+import org.jetbrains.annotations.Range;
 
-import java.io.Closeable;
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Predicate;
+public class PacketInLegacyHandshake implements Packet {
 
-public interface NetworkManager extends Closeable {
+    @Override
+    public void readData(@NotNull @BufferStatus(BufferStatus.Status.FILLED) DataBuffer dataBuffer) {
+        throw new UnsupportedOperationException();
+    }
 
-    @NotNull
-    @UnmodifiableView
-    Collection<NetworkListener> getNetworkListeners();
+    @Override
+    public void writeData(@NotNull @BufferStatus(BufferStatus.Status.EMPTY) DataBuffer dataBuffer) {
+        throw new UnsupportedOperationException();
+    }
 
-    @NotNull
-    CompletableFuture<Boolean> addNetworkListener(@NotNull NetworkListener networkListener);
+    @Override
+    public void releaseData() {
+        throw new UnsupportedOperationException();
+    }
 
-    boolean closeNetworkListener(@NotNull NetworkListener networkListener);
-
-    void closeNetworkListeners(@NotNull Predicate<NetworkListener> listenerFilter);
-
-    void closeAllNetworkListeners();
+    @Override
+    public @Range(from = 0, to = Short.MAX_VALUE) short getId() {
+        throw new UnsupportedOperationException();
+    }
 }

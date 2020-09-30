@@ -92,6 +92,10 @@ public abstract class PhantomServer implements Server, Audience<Player> {
     @NotNull
     public abstract ServerConfig getConfig();
 
+    public abstract boolean isPrimaryThread(@Nullable Thread thread);
+
+    public abstract void ensureMainThread();
+
     // == removed methods
 
     @Override

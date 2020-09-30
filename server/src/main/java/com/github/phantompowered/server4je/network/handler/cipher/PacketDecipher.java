@@ -22,31 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.util;
+package com.github.phantompowered.server4je.network.handler.cipher;
 
-import com.google.common.base.Preconditions;
+import com.github.phantompowered.server4je.network.buffer.ByteBufUtil;
+import com.velocitypowered.natives.encryption.VelocityCipher;
+import com.velocitypowered.natives.util.MoreByteBufUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageDecoder;
 
-import java.io.Closeable;
+import java.util.List;
 
-public abstract class DefaultCloseable implements Closeable {
+public class PacketDecipher extends MessageToMessageDecoder<ByteBuf> {
 
-    protected boolean closed = false;
+    private final VelocityCipher cipher;
+
+    public PacketDecipher(VelocityCipher cipher) {
+        this.cipher = cipher;
+    }
 
     @Override
-    public void close() {
-        if (!this.isClosed()) {
-            this.closed = true;
-            this.close0();
+    protected void decode(ChannelHandlerContext context, ByteBuf byteBuf, List<Object> list) {
+        ByteBuf in = MoreByteBufUtils.ensureCompatible(context.alloc(), this.cipher, byteBuf).slice();
+        try {
+            this.cipher.process(in);
+            list.add(in);
+        } catch (Throwable throwable) {
+            ByteBufUtil.releaseFully(in);
+            throw throwable;
         }
     }
 
-    protected abstract void close0();
-
-    public boolean isClosed() {
-        return this.closed;
-    }
-
-    protected void ensureNotClosed() {
-        Preconditions.checkArgument(!this.closed, "Object already closed");
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        this.cipher.close();
     }
 }

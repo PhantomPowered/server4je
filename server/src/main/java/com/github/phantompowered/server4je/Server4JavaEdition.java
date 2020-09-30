@@ -40,6 +40,7 @@ import com.github.phantompowered.server4je.common.exception.ReportedException;
 import com.github.phantompowered.server4je.config.JsonServerConfig;
 import com.github.phantompowered.server4je.eula.Eula;
 import com.github.phantompowered.server4je.gson.JsonDataLoader;
+import com.github.phantompowered.server4je.network.ServerNettyNetworkManager;
 import com.github.phantompowered.server4je.options.ServerCliOptionUtil;
 import com.github.phantompowered.server4je.plugin.ServerPluginManager;
 import com.github.phantompowered.server4je.scheduler.ServerScheduler;
@@ -93,14 +94,16 @@ import java.util.function.Predicate;
 public class Server4JavaEdition extends PhantomServer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Server4JavaEdition.class);
+    private static final java.util.logging.Logger JAVA_LOGGER = java.util.logging.Logger.getLogger(Server4JavaEdition.class.getSimpleName());
 
-    private final CommandMap commandMap = new ServerCommandMap();
-    private final BukkitScheduler bukkitScheduler = new ServerScheduler();
-    private final ServicesManager servicesManager = new ServerServicesManager();
-    private final PluginManager pluginManager = new ServerPluginManager();
-    private final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Server4JavaEdition.class.getSimpleName());
-    private final AtomicBoolean running = new AtomicBoolean(true);
     private final Spigot spigot = new ServerSpigot();
+    private final Thread primaryThread = Thread.currentThread();
+    private final CommandMap commandMap = new ServerCommandMap();
+    private final PluginManager pluginManager = new ServerPluginManager();
+    private final BukkitScheduler bukkitScheduler = new ServerScheduler();
+    private final AtomicBoolean running = new AtomicBoolean(true);
+    private final ServicesManager servicesManager = new ServerServicesManager();
+    private final NetworkManager networkManager = new ServerNettyNetworkManager();
 
     private final OptionSet options;
     private final ServerVersion serverVersion;
@@ -157,7 +160,7 @@ public class Server4JavaEdition extends PhantomServer {
     @Override
     @NotNull
     public NetworkManager getNetworkManager() {
-        return null;
+        return this.networkManager;
     }
 
     @Override
@@ -186,7 +189,7 @@ public class Server4JavaEdition extends PhantomServer {
     @Override
     @NotNull
     public ServerConfig getConfig() {
-        return null;
+        return this.serverConfig;
     }
 
     @Override
@@ -221,12 +224,12 @@ public class Server4JavaEdition extends PhantomServer {
 
     @Override
     public int getMaxPlayers() {
-        return 0;
+        return this.serverConfig.getMaxPlayers();
     }
 
     @Override
     public void setMaxPlayers(int i) {
-
+        this.serverConfig.setMaxPlayers(i);
     }
 
     @Override
@@ -440,7 +443,7 @@ public class Server4JavaEdition extends PhantomServer {
     @Override
     @NotNull
     public java.util.logging.Logger getLogger() {
-        return this.logger;
+        return JAVA_LOGGER;
     }
 
     @Override
@@ -679,19 +682,29 @@ public class Server4JavaEdition extends PhantomServer {
     }
 
     @Override
-    public boolean isPrimaryThread() {
-        return false;
+    public final boolean isPrimaryThread() {
+        return this.isPrimaryThread(Thread.currentThread());
+    }
+
+    @Override
+    public final boolean isPrimaryThread(@Nullable Thread thread) {
+        return thread != null && this.primaryThread == thread;
+    }
+
+    @Override
+    public final void ensureMainThread() {
+        Preconditions.checkArgument(this.isPrimaryThread(), "Not on the primary thread");
     }
 
     @Override
     @NotNull
     public String getMotd() {
-        return null;
+        return this.serverConfig.getMessages().getMessageOfTheDay();
     }
 
     @Override
     public String getShutdownMessage() {
-        return null;
+        return this.serverConfig.getMessages().getShutdownMessage();
     }
 
     @Override
@@ -896,7 +909,7 @@ public class Server4JavaEdition extends PhantomServer {
     @Override
     @NotNull
     public String getPermissionMessage() {
-        return null;
+        return this.serverConfig.getMessages().getNoPermissionMessage();
     }
 
     @Override

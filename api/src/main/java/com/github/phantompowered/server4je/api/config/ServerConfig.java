@@ -78,6 +78,8 @@ public interface ServerConfig {
 
     boolean isCompressionEnabled();
 
+    long getReadTimeoutMilliseconds();
+
     enum IpForwardingMode {
 
         DISABLED,

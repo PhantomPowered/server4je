@@ -40,12 +40,14 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Deprecated
 @ApiStatus.Internal
 public final class ServerUnsafeValues implements UnsafeValues {
 
     public static final UnsafeValues INSTANCE = new ServerUnsafeValues();
+    private static final AtomicInteger ENTITY_IDS = new AtomicInteger();
     private static final List<String> SUPPORTED_API = Arrays.asList("1.13", "1.14", "1.15", "1.16");
 
     private ServerUnsafeValues() {
@@ -149,5 +151,10 @@ public final class ServerUnsafeValues implements UnsafeValues {
     @Override
     public String getTranslationKey(EntityType entityType) {
         return null;
+    }
+
+    @Override
+    public int nextEntityId() {
+        return ENTITY_IDS.getAndIncrement();
     }
 }

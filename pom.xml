@@ -12,7 +12,6 @@
     <modules>
         <module>api</module>
         <module>common</module>
-        <module>natives</module>
         <module>authlib</module>
         <module>protocol</module>
         <module>gui</module>

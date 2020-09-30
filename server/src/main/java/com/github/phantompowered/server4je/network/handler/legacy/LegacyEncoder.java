@@ -22,13 +22,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.cipher;
+package com.github.phantompowered.server4je.network.handler.legacy;
 
-class NativeCrypto {
+import com.github.phantompowered.server4je.protocol.legacy.out.PacketOutLegacyDisconnect;
+import com.google.errorprone.annotations.DoNotMock;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+import org.jetbrains.annotations.ApiStatus;
 
-    protected native long init(boolean encrypt, byte[] key);
+@ChannelHandler.Sharable
+@DoNotMock("Use LegacyEncoder.LEGACY_ENCODER")
+public class LegacyEncoder extends MessageToByteEncoder<PacketOutLegacyDisconnect> {
 
-    protected native void free(long ctx);
+    public static final LegacyEncoder LEGACY_ENCODER = new LegacyEncoder();
 
-    protected native void process(long ctx, long source, long target, int length);
+    @ApiStatus.Internal
+    private LegacyEncoder() {
+    }
+
+    @Override
+    protected void encode(ChannelHandlerContext channelHandlerContext, PacketOutLegacyDisconnect packet, ByteBuf byteBuf) {
+        packet.writeData(byteBuf);
+    }
 }

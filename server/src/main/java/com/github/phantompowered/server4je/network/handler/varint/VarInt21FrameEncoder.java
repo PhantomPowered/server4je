@@ -22,43 +22,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.phantompowered.server4je.cipher;
+package com.github.phantompowered.server4je.network.handler.varint;
 
-import com.github.phantompowered.server4je.util.DefaultCloseable;
+import com.github.phantompowered.server4je.network.buffer.ByteBufUtil;
+import com.velocitypowered.natives.encryption.JavaVelocityCipher;
+import com.velocitypowered.natives.util.Natives;
 import io.netty.buffer.ByteBuf;
-import org.jetbrains.annotations.NotNull;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
 
-import javax.crypto.SecretKey;
+@ChannelHandler.Sharable
+public class VarInt21FrameEncoder extends MessageToByteEncoder<ByteBuf> {
 
-public class NativeCryptoWrapper extends DefaultCloseable implements Crypto {
+    public static final VarInt21FrameEncoder ENCODER = new VarInt21FrameEncoder();
+    private static final boolean HEAP_BUFFERS = Natives.cipher.get() == JavaVelocityCipher.FACTORY;
 
-    private final NativeCrypto nativeCrypto = new NativeCrypto();
-    private final long ctx;
-
-    public NativeCryptoWrapper(boolean encrypt, SecretKey secretKey) {
-        this.ctx = this.nativeCrypto.init(encrypt, secretKey.getEncoded());
+    private VarInt21FrameEncoder() {
     }
 
     @Override
-    public void process(@NotNull ByteBuf source) {
-        this.ensureNotClosed();
-
-        final int length = source.readableBytes();
-        if (length <= 0) {
-            return;
-        }
-
-        final long begin = source.memoryAddress() + source.readerIndex();
-        this.nativeCrypto.process(this.ctx, begin, begin, source.readableBytes());
+    protected void encode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, ByteBuf byteBuf2) {
+        ByteBufUtil.writeUnsignedVarInt(byteBuf2, byteBuf.readableBytes());
+        byteBuf2.writeBytes(byteBuf);
     }
 
     @Override
-    public boolean isNative() {
-        return true;
-    }
-
-    @Override
-    protected void close0() {
-        this.nativeCrypto.free(this.ctx);
+    protected ByteBuf allocateBuffer(ChannelHandlerContext ctx, ByteBuf msg, boolean preferDirect) {
+        return HEAP_BUFFERS
+            ? ctx.alloc().heapBuffer(5 + msg.readableBytes())
+            : ctx.alloc().directBuffer(5 + msg.readableBytes());
     }
 }

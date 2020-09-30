@@ -28,7 +28,9 @@ import com.github.phantompowered.server4je.common.exception.ClassShouldNotBeInst
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public final class Iterables {
@@ -45,6 +47,18 @@ public final class Iterables {
         }
 
         return Optional.empty();
+    }
+
+    @NotNull
+    public static <T> Collection<T> all(@NotNull Collection<T> collection, @NotNull Predicate<T> filter) {
+        collection.removeIf(filter.negate());
+        return collection;
+    }
+
+    @NotNull
+    public static <K, V> Collection<Map.Entry<K, V>> allEntries(@NotNull Set<Map.Entry<K, V>> entries, @NotNull Predicate<K> filter) {
+        entries.removeIf(entry -> !filter.test(entry.getKey()));
+        return entries;
     }
 
     public static <T> boolean anyMatch(@NotNull Collection<T> collection, @NotNull Predicate<T> predicate) {
